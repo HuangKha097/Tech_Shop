@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"/>
+    <link rel="stylesheet" href="../User/assets/css/reset.css"/>
+    <link rel="stylesheet" href="../User/assets/css/Login.css"/>
+    <link rel="stylesheet" href="../User/assets/css/main.css"/>
+
+    <title>Huka</title>
+</head>
+
+<body>
+<div class="container" id="container">
+    <div class="form-container sign-up">
+        <form>
+            <h1>Create Account</h1>
+            <div class="social-icons">
+                <a href="https://accounts.google.com/signin" target="_blank" class="icon"><i
+                        class="fa-brands fa-google-plus-g"></i></a>
+                <a href="https://www.facebook.com" target="_blank" class="icon"><i
+                        class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://github.com/" target="_blank" class="icon"><i class="fa-brands fa-github"></i></a>
+                <a href="https://www.linkedin.com/" target="_blank" class="icon"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+            <span>or use your email for registeration</span>
+            <input type="text" placeholder="Name" required/>
+            <input type="email" placeholder="Email" required/>
+            <input type="password" placeholder="Password" required/>
+            <input type="password" placeholder="Confirm your Password" required/>
+
+
+            <a href="./isLoginedIndex.html">
+                <button class="btn">Sign Up</button>
+            </a>
+        </form>
+    </div>
+
+    <div class="form-container sign-in">
+        <form>
+            <h1>Sign In</h1>
+            <div class="social-icons">
+
+                <a href="https://accounts.google.com/signin" target="_blank" class="icon"><i
+                        class="fa-brands fa-google-plus-g"></i></a>
+
+                <a href="https://www.facebook.com" target="_blank" class="icon"><i
+                        class="fa-brands fa-facebook-f"></i></a>
+                <a href="https://github.com/" target="_blank" class="icon"><i class="fa-brands fa-github"></i></a>
+
+                <a href="https://www.linkedin.com/" target="_blank" class="icon"><i
+                        class="fa-brands fa-linkedin-in"></i></a>
+            </div>
+            <span>or use your email password</span>
+            <input type="email" placeholder="Email" />
+
+            <div class="password-field">
+                <input type="password" id="loginPassword" placeholder="Password" />
+                <i class="fa-solid fa-eye-slash" id="toggleLoginPassword"></i>
+            </div>
+
+
+            <button id="showForgot">Forget Your Password?</button>
+            <button class="btn-login" type="button" onclick="window.location.href='./isLoginedIndex.html'">
+                Sign In
+            </button>
+
+
+        </form>
+    </div>
+
+    <div class="toggle-container">
+        <div class="toggle">
+            <div class="toggle-panel toggle-left">
+                <h1>Welcome Back!</h1>
+                <p>Enter your personal details to use all of site features</p>
+                <button class="hidden" id="login">Sign In</button>
+            </div>
+            <div class="toggle-panel toggle-right">
+                <h1>Hello, Friend!</h1>
+                <p>
+                    Register with your personal details to use all of site features
+                </p>
+                <button class="hidden" id="register">Sign Up</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-container forgot-password">
+
+        <span class="close-forgot" id="backToLogin">&times;</span>
+
+        <form id="forgotPasswordForm">
+            <h1>Reset Password</h1>
+
+            <p class="message" id="forgotMessage"></p>
+
+            <span>Enter your email to receive a code</span>
+            <input type="email" placeholder="Email" id="forgotEmail" required/>
+
+            <button type="button" id="sendCodeBtn">Send Code</button>
+
+            <div class="code-field" id="codeSection">
+                <span>Enter code and new password</span>
+                <input type="text" placeholder="Verification Code" id="verificationCode"/>
+                <input type="password" placeholder="New Password" id="newPassword"/>
+                <button type="submit" id="resetPassBtn">Reset Password</button>
+            </div>
+        </form>
+    </div>
+
+</div>
+<script src="../User/assets/js/index.js"></script>
+</body>
+
+</html>

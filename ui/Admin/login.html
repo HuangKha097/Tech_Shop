@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Admin Login</title>
+
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <link rel="stylesheet" href="assets/css/login.css">
+</head>
+<body>
+
+<div class="login-container">
+
+    <div class="login-box">
+
+        <div class="login-header">
+            <img style="width: 200px;" src="../../ui/User/assets/images/2.png" alt="logo">
+            <h2>Admin Login</h2>
+        </div>
+
+        <form action="index.html" method="GET">
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" value="admin@tech.com" required>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" value="123456" required>
+            </div>
+
+            <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center;">Login</button>
+        </form>
+
+        <div class="login-extra">
+            <a href="#" id="forgot-password-link">Forgot your password?</a>
+        </div>
+
+    </div>
+</div>
+
+<div class="modal-overlay" id="modal-overlay"></div>
+<div class="modal" id="forgot-modal">
+
+    <div id="forgot-view-1">
+        <div class="modal-header">
+            <h3 id="modal-title">Reset Password</h3>
+            <button class="modal-close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 1.5rem; margin-bottom: 1.6rem;">
+                Enter your email to receive a reset link.
+            </p>
+            <div class="form-group">
+                <label for="reset-email" style="color: #fff">Email</label>
+                <input type="email" id="reset-email" placeholder="Enter your email" required>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button class="btn btn-primary" id="send-link-btn">Send Reset Link</button>
+        </div>
+    </div>
+
+    <div id="forgot-view-2" style="display: none;">
+        <div class="modal-header">
+            <h3 id="modal-title">Success</h3>
+            <button class="modal-close" data-dismiss="modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <p style="font-size: 1.5rem; line-height: 1.6;" class="success-message">
+                A new password has been sent to your email. Please login and change your password.
+            </p>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const overlay = document.getElementById('modal-overlay');
+        const modal = document.getElementById('forgot-modal');
+        const link = document.getElementById('forgot-password-link');
+        const sendBtn = document.getElementById('send-link-btn');
+
+        const view1 = document.getElementById('forgot-view-1');
+        const view2 = document.getElementById('forgot-view-2');
+
+        const closeElements = modal.querySelectorAll('[data-dismiss="modal"]');
+
+        function openModal() {
+            view1.style.display = 'block';
+            view2.style.display = 'none';
+            document.getElementById('reset-email').value = '';
+
+            modal.classList.add('active');
+            overlay.classList.add('active');
+        }
+
+        function closeModal() {
+            modal.classList.remove('active');
+            overlay.classList.remove('active');
+        }
+
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            openModal();
+        });
+
+        sendBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            view1.style.display = 'none';
+            view2.style.display = 'block';
+        });
+
+        closeElements.forEach(btn => {
+            btn.addEventListener('click', closeModal);
+        });
+        overlay.addEventListener('click', closeModal);
+    });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,122 @@
+/* assets/css/login.css */
+/* Giao diện Dark Mode đầy đủ cho trang Đăng nhập */
+
+/* 1. NỀN TRANG VÀ LAYOUT CĂN GIỮA */
+body, .login-container {
+    background-color: #1a202c; /* Màu nền Dark Mode */
+
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Inter", sans-serif; /* Đảm bảo font được tải */
+}
+
+/* 2. HỘP ĐĂNG NHẬP */
+.login-box {
+
+   width: 520px;
+    padding: 3.2rem;
+    background-color: #2d3748; /* Nền hộp tối (nhạt hơn) */
+    border: 1px solid #4a5568;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.login-header {
+    text-align: center;
+    margin-bottom: 2.4rem;
+}
+
+.login-header img {
+    width: 200px;
+    margin: 0 auto;
+}
+
+/* 3. CHỮ (TEXT) */
+.login-header h2 {
+    font-size: 2.4rem;
+    font-weight: 700;
+    margin-top: 1.6rem;
+    color: #e2e8f0; /* Chữ màu sáng */
+}
+
+.login-header p {
+    font-size: 1.5rem;
+    color: #a0aec0; /* Chữ phụ màu sáng */
+    margin-top: 0.8rem;
+}
+
+/* 4. FORM (GHI ĐÈ TỪ STYLE.CSS) */
+.login-box .form-group {
+    margin-bottom: 2rem;
+}
+
+.login-box .form-group label {
+    color: #e2e8f0; /* Nhãn màu sáng */
+    font-size: 1.4rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.login-box .form-group input {
+    /* Ghi đè input từ style.css */
+    width: 100%;
+    padding: 1.2rem;
+    border: 1px solid #4a5568;
+    border-radius: 6px;
+    font-size: 1.4rem;
+    font-family: "Inter", sans-serif;
+    background-color: #1a202c; /* Nền input (tối nhất) */
+    color: #e2e8f0; /* Chữ gõ vào màu sáng */
+}
+
+.login-box .form-group input:focus {
+    /* Dùng màu xanh dương (từ style.css gốc) làm màu nhấn */
+    border-color: #3182ce;
+    box-shadow: 0 0 0 2px rgba(49, 130, 206, 0.2);
+    outline: none;
+}
+
+/* 5. NÚT BẤM VÀ LINK */
+/* Tệp style.css đã định nghĩa .btn-primary màu xanh */
+/* Chúng ta không cần ghi đè nó */
+
+.login-extra {
+    text-align: center;
+    margin-top: 1.6rem;
+}
+
+.login-extra a {
+    font-size: 1.4rem;
+    color: #3182ce; /* Màu xanh GỐC */
+    font-weight: 500;
+    text-decoration: none;
+}
+.login-extra a:hover {
+    text-decoration: underline;
+}
+
+/* 6. MODAL (POPUP) DARK MODE */
+/* Ghi đè màu của .modal từ style.css */
+.modal {
+    background-color: #2d3748;
+    border-color: #4a5568;
+}
+.modal-header, .modal-footer {
+    border-color: #4a5568;
+    background-color: transparent; /* Tắt màu nền footer của style.css */
+}
+.modal-header h3 {
+    color: #e2e8f0;
+}
+.modal-body p {
+    color: #a0aec0;
+}
+.modal-body p.success-message {
+    color: #e2e8f0; /* Chữ thông báo thành công */
+}
+.modal-close {
+    color: #a0aec0;
+}

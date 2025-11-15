@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>User Info - Huka</title>
+
+    <link
+            rel="stylesheet"
+            href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css"
+    />
+
+    <link rel="stylesheet" href="../User/assets/css/reset.css"/>
+    <link rel="stylesheet" href="../User/assets/css/main.css"/>
+    <link rel="stylesheet" href="../User/assets/css/checkout.css"/>
+
+    <style>
+        .order-address {
+            padding: 15px 20px;
+            border-top: 1px solid #f0f0f0;
+            margin-top: 10px;
+        }
+
+        .order-address h4 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .order-address p {
+            font-size: 1.4rem;
+            color: #555;
+            line-height: 1.6;
+            margin: 0;
+            white-space: pre-line;
+        }
+    </style>
+</head>
+
+<body>
+<div class="content">
+    <nav class="navbar-wrapper">
+        <div class="logo">
+            <a href="./isLoginedIndex.html">
+                <img src="../User/assets/images/2.png" alt="logo shop"/>
+            </a>
+        </div>
+
+        <label for="search" class="search">
+            <a href="./SearchProduct.html">
+                <i class="fa fa-magnifying-glass icon"></i
+                ></a>
+            <input
+                    name="search"
+                    type="text"
+                    id="search"
+                    placeholder="Search gadgets, devices"
+            />
+        </label>
+
+        <ul class="hotlinks">
+            <li>
+                <div class="menuWrapper">
+                    <a href="#!">Category</a>
+                    <div class="submenu">
+                        <ul>
+                            <li>
+                                <a
+                                        href="./DiscountsSeeAllHighToLow.html"
+                                >Black Friday Deals</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                        href="./NewArrivalsSeeAllHighToLow.html"
+                                >New Arrivals</a
+                                >
+                            </li>
+                            <li>
+                                <a href="./HotDealSeeAllHighToLow.html"
+                                >Hot Deals</a
+                                >
+                            </li>
+                            <li>
+                                <a
+                                        href="./DiscountsSeeAllHighToLow.html"
+                                >
+                                    Discounts
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </li>
+            <li><a href="./About.html">About</a></li>
+            <li><a href="./checkout.html">Cart</a></li>
+            <li><a style="text-decoration: underline" href="#">Hello User001</a></li>
+        </ul>
+    </nav>
+</div>
+
+<div class="container">
+    <div class="content">
+        <div class="alert"
+             style="display: none; background-color: #2e7d32; color: white; padding: 1rem 2rem; border-radius: 8px;">
+            Cancel successfully!
+        </div>
+
+        <div class="checkout-wrapper">
+
+            <div class="checkout-summary-block">
+                <span class="tittle">Order History</span>
+
+                <div class="oder-wrapper">
+                    <div class=" order-list-body">
+
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="header-left">
+                                    <span class="order-id">Order #10521</span>
+                                    <span class="order-date">07-Nov-2025</span>
+                                </div>
+                                <span class="order-status processing">Processing</span>
+                            </div>
+                            <div class="order-item-list">
+                                <div class="card-wrapper">
+                                    <img src="https://images.unsplash.com/photo-1605134513573-384dcf99a44c?w=400"
+                                         alt="product-img"/>
+                                    <div class="info">
+                                        <h2 class="product-name">Gaming Laptop</h2>
+                                        <div class="price-quatity">
+                                            <span class="product-price">$ 999</span>
+                                            <span class="quantity"> &times; 1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="order-address">
+                                <h4>Address:</h4>
+                                <p>
+                                    User001
+                                    150 đường Nguyễn Huệ, Phường Bến Nghé
+                                    Quận 1, TP. Hồ Chí Minh
+                                </p>
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-total">Total: $ 999</span>
+                                <button class="cancel-btn">Cancel Order</button>
+                            </div>
+                        </div>
+
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="header-left">
+                                    <span class="order-id">Order #10488</span>
+                                    <span class="order-date">01-Nov-2025</span>
+                                </div>
+                                <span class="order-status delivered">Delivered</span>
+                            </div>
+                            <div class="order-item-list">
+                                <div class="card-wrapper">
+                                    <img src="https://images.unsplash.com/photo-1626958390898-162d3577f293?w=400"
+                                         alt="product-img"/>
+                                    <div class="info">
+                                        <h2 class="product-name">Mechanical Keyboard</h2>
+                                        <div class="price-quatity">
+                                            <span class="product-price">$ 120</span>
+                                            <span class="quantity"> &times; 2</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-wrapper">
+                                    <img src="https://images.unsplash.com/photo-1542438510-388f4c2c3104?w=400"
+                                         alt="product-img"/>
+                                    <div class="info">
+                                        <h2 class="product-name">Wireless Mouse</h2>
+                                        <div class="price-quatity">
+                                            <span class="product-price">$ 75</span>
+                                            <span class="quantity"> &times; 1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="order-address">
+                                <h4>Address:</h4>
+                                <p>
+                                    User001
+                                    Nguyễn Trãi, q.5
+                                </p>
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-total">Total: $ 315</span>
+                                <button class="cancel-btn" disabled>Cancel Order</button>
+                            </div>
+                        </div>
+
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="header-left">
+                                    <span class="order-id">Order #10452</span>
+                                    <span class="order-date">28-Oct-2025</span>
+                                </div>
+                                <span class="order-status canceled">Canceled</span>
+                            </div>
+                            <div class="order-item-list">
+                                <div class="card-wrapper">
+                                    <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400"
+                                         alt="product-img"/>
+                                    <div class="info">
+                                        <h2 class="product-name">4K Monitor</h2>
+                                        <div class="price-quatity">
+                                            <span class="product-price">$ 450</span>
+                                            <span class="quantity"> &times; 1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="order-address">
+                                <h4>Address</h4>
+                                <p>
+                                    User001
+                                    Đa kao ,q.3
+                                </p>
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-total">Total: $ 450</span>
+                            </div>
+                        </div>
+
+                        <div class="order-card">
+                            <div class="order-header">
+                                <div class="header-left">
+                                    <span class="order-id">Order #10451</span>
+                                    <span class="order-date">27-Oct-2025</span>
+                                </div>
+                                <span class="order-status delivered">Delivered</span>
+                            </div>
+                            <div class="order-item-list">
+                                <div class="card-wrapper">
+                                    <img src="https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=400"
+                                         alt="product-img"/>
+                                    <div class="info">
+                                        <h2 class="product-name">Gaming Chair</h2>
+                                        <div class="price-quatity">
+                                            <span class="product-price">$ 350</span>
+                                            <span class="quantity"> &times; 1</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="order-address">
+                                <h4>Address:</h4>
+                                <p>
+                                    User001
+                                    Lê Trọng Tấn, Tân Phú, Tp. Hồ Chí Minh
+                                </p>
+                            </div>
+                            <div class="order-footer">
+                                <span class="order-total">Total: $ 350</span>
+                                <button class="cancel-btn" disabled>Cancel Order</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div style="width: 100%; text-align: end; padding: 10px;"><a  href="Login.html">
+            <button>Logout</button>
+        </a></div>
+    </div>
+</div>
+
+<footer class="footer-wrapper">
+    <div class="footer-container">
+        <div class="block-left">
+            <h1>All tech products. One place.</h1>
+            <p>
+                Experience the future of technology today. Find premium
+                gadgets, smart wearables, and accessories designed to
+                boost your productivity and style.
+                <strong>Up to 70% cashback on selected items!</strong>
+            </p>
+        </div>
+        <div class="block-right">
+            <ul class="product">
+                <h4>Product</h4>
+                <li>
+                    <a href="./HotDealSeeAllHighToLow.html"
+                    >Hot Deals</a
+                    >
+                </li>
+                <li>
+                    <a href="./DiscountsSeeAllHighToLow.html"
+                    >Discounts</a
+                    >
+                </li>
+                <li>
+                    <a href="./NewArrivalsSeeAllHighToLow.html"
+                    >New Arrivals</a
+                    >
+                </li>
+                <li>
+                    <a href="./DiscountsSeeAllHighToLow.html"
+                    >Black Friday Deals</a
+                    >
+                </li>
+            </ul>
+
+            <ul class="socials">
+                <h4>Socials</h4>
+                <li>
+                    <a
+                            href="https://x.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                    >Twitter</a
+                    >
+                </li>
+                <li>
+                    <a
+                            href="https://www.instagram.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                    >Instagram</a
+                    >
+                </li>
+                <li>
+                    <a
+                            href="https://www.facebook.com/"
+                            target="_blank"
+                            rel="noopener noreferrer"
+                    >Facebook</a
+                    >
+                </li>
+            </ul>
+
+            <ul class="information">
+                <h4>Information</h4>
+
+                <li><a href="./About.html">About</a></li>
+            </ul>
+        </div>
+    </div>
+</footer>
+<script src="../User/assets/js/index.js"></script>
+</body>
+</html>
