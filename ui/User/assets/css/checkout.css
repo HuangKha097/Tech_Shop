@@ -508,6 +508,9 @@ body {
         flex: none;
         width: 100%;
     }
+    .checkout-wrapper .block-left{
+        margin-bottom: 10rem;
+    }
 }
 
 /* Mobile */
@@ -553,6 +556,9 @@ body {
     .address-detail-block {
         flex-direction: column;
         gap: 2rem;
+    }
+    .checkout-wrapper .block-left{
+        margin-bottom: 10rem;
     }
 }
 

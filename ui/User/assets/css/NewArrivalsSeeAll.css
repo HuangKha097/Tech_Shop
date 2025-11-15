@@ -494,6 +494,19 @@ body {
     .product-list {
         grid-template-columns: repeat(2, 1fr); /* 2 cột */
     }
+    .product-header {
+        flex-direction: column; /* Chuyển header thành 1 cột */
+        align-items: flex-start; /* Căn lề trái */
+        gap: 1.5rem;             /* Khoảng cách giữa tiêu đề và bộ lọc */
+    }
+
+    .filter {
+        display: flex;
+        flex-wrap: wrap; /* Cho phép các item xuống dòng nếu chật */
+        gap: 1rem;       /* Khoảng cách giữa các item trong bộ lọc */
+    }
+    /* === KẾT THÚC PHẦN THÊM === */
+
 
     /* ----- NEWSLETTER ----- */
     .newsletter-wrapper p {
@@ -547,6 +560,19 @@ body {
         padding-left: 2rem;
         padding-right: 2rem;
     }
+    .product-header {
+        gap: 1rem; /* Giảm khoảng cách một chút cho gọn */
+    }
+
+    .filter {
+        flex-direction: column; /* Xếp các item trong bộ lọc thành 1 cột */
+        width: 100%;            /* Bộ lọc chiếm 100% chiều rộng */
+    }
+
+    .filter select,
+    .filter button {
+        width: 100%; /* Bắt buộc các item dãn 100% */
+    }
 
     .product-header h2 {
         font-size: 1.8rem; /* Giữ theo code cũ của bạn */
@@ -559,6 +585,7 @@ body {
     .product-list {
         grid-template-columns: 1fr; /* 1 cột */
     }
+
 
     /* ----- NEWSLETTER ----- */
     .newsletter-wrapper {
