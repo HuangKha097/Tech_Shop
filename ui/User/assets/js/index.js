@@ -1,36 +1,11 @@
 function initProductDetailPage() {
-    const productImg = document.querySelector(".product-image img");
-    const btnLeft = document.querySelector(".next-btn.left");
-    const btnRight = document.querySelector(".next-btn.right");
+
     const addBtn = document.querySelector(".btn-add");
     const buyBtn = document.querySelector(".btn-buy")
 
 
-    if (productImg && btnLeft && btnRight && addBtn && buyBtn) {
-        const images = [
-            "https://images.unsplash.com/photo-1590212151175-e58edd96185b?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=1171",
-            "https://images.unsplash.com/photo-1664454217818-11e5baf60205?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=1170",
-            "https://images.unsplash.com/photo-1669723008519-3b5043b5b826?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=1180",
-        ];
-        let currentIndex = 0;
+    if ( addBtn && buyBtn) {
 
-        function updateImage() {
-            productImg.style.opacity = 0;
-            setTimeout(() => {
-                productImg.src = images[currentIndex];
-                productImg.style.opacity = 1;
-            }, 200);
-        }
-
-        btnRight.addEventListener("click", () => {
-            currentIndex = (currentIndex + 1) % images.length;
-            updateImage();
-        });
-
-        btnLeft.addEventListener("click", () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            updateImage();
-        });
 
         function handleButtonSuccess(button) {
             const originalText = button.textContent;
@@ -268,22 +243,28 @@ function initCheckoutPage() {
     const checkoutForm = document.querySelector('.checkout-wrapper .block-left form');
 
     if (checkoutForm) {
-        const successAlert = document.querySelectorAll('.alert')[0]; // Cái alert màu xanh
-        const errorAlert = document.querySelectorAll('.alert')[1];   // Cái alert màu đỏ
+
+        const successAlert = document.querySelectorAll('.alert')[0];
+        const errorAlert = document.querySelectorAll('.alert')[1];
 
         checkoutForm.addEventListener('submit', function (event) {
 
             event.preventDefault();
             if (checkoutForm.checkValidity()) {
 
+
                 successAlert.style.display = 'block';
                 errorAlert.style.display = 'none';
 
-
                 window.scrollTo({top: 0, behavior: 'smooth'});
 
-            } else {
 
+                setTimeout(() => {
+                    successAlert.style.display = 'none';
+                }, 3000);
+
+
+            } else {
                 console.log('Form chưa hợp lệ. Vui lòng điền đủ thông tin.');
             }
         });
@@ -301,7 +282,6 @@ function initUserInfoPage() {
             button.addEventListener('click', function (event) {
                 event.preventDefault();
 
-                // Hiển thị thông báo
                 successAlert.style.display = 'block';
                 window.scrollTo({top: 0, behavior: 'smooth'});
 
@@ -359,6 +339,86 @@ function initNewsletter() {
     }
 }
 
+function initAdvancedSearch() {
+    const filterOptionsList = document.querySelector('.filter-options-list');
+    const activeFiltersContainer = document.querySelector('.active-filters-container');
+    const filterTagsDisplay = document.querySelector('.filter-tags-display');
+    const clearAllBtn = document.querySelector('.clear-all-tags-btn');
+
+    if (!filterOptionsList || !activeFiltersContainer || !filterTagsDisplay || !clearAllBtn) {
+        return;
+    }
+
+    filterOptionsList.addEventListener('change', (event) => {
+        const target = event.target;
+        if (target.matches('input[type="checkbox"]') || target.matches('input[type="radio"]')) {
+            updateSearchTags();
+        }
+    });
+
+    clearAllBtn.addEventListener('click', clearAllFilters);
+
+    function updateSearchTags() {
+        filterTagsDisplay.innerHTML = '';
+        const checkedInputs = filterOptionsList.querySelectorAll('input:checked');
+
+        checkedInputs.forEach(input => {
+            let filterType = input.closest('li').querySelector('h4') ? input.closest('li').querySelector('h4').textContent.trim() : 'Filter';
+            const tagTextRaw = input.parentNode.textContent.trim();
+
+            let tagText = tagTextRaw;
+            if (input.type === 'radio') {
+                tagText = `${filterType}: ${tagTextRaw}`;
+            } else if (input.type === 'checkbox') {
+                tagText = tagTextRaw;
+            }
+
+            const tag = document.createElement('span');
+            tag.className = 'filter-tag';
+            tag.innerHTML = `${tagText} <i class="fa fa-times-circle" data-filter-value="${input.value}"></i>`;
+
+            tag.querySelector('.fa-times-circle').addEventListener('click', removeTag);
+            filterTagsDisplay.appendChild(tag);
+        });
+
+        const hasTags = checkedInputs.length > 0;
+
+        // Điều chỉnh hiển thị của container chứa tags và nút Clear All
+        if (hasTags) {
+            activeFiltersContainer.style.display = 'flex';
+            clearAllBtn.style.display = 'block';
+        } else {
+            activeFiltersContainer.style.display = 'none';
+            clearAllBtn.style.display = 'none';
+        }
+    }
+
+    function removeTag(event) {
+        event.stopPropagation();
+        const remover = event.target;
+        const filterValue = remover.getAttribute('data-filter-value');
+
+        const inputToUncheck = filterOptionsList.querySelector(`input[value="${filterValue}"]`);
+
+        if (inputToUncheck) {
+            inputToUncheck.checked = false;
+        }
+
+        updateSearchTags();
+    }
+
+    function clearAllFilters() {
+        // Bỏ chọn tất cả filters
+        filterOptionsList.querySelectorAll('input:checked').forEach(input => {
+            input.checked = false;
+        });
+
+        // Cập nhật Tags và nút X tổng
+        updateSearchTags();
+    }
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
     initProductDetailPage();
     initLoginPage();
@@ -367,4 +427,5 @@ document.addEventListener("DOMContentLoaded", function () {
     initCheckoutPage();
     initUserInfoPage();
     initNewsletter();
+    initAdvancedSearch();
 });

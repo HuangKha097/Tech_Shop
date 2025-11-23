@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>User Info - Huka</title>
+    <title>User Dashboard - Huka</title>
 
     <link
             rel="stylesheet"
@@ -13,28 +13,484 @@
     <link rel="stylesheet" href="../User/assets/css/reset.css"/>
     <link rel="stylesheet" href="../User/assets/css/main.css"/>
     <link rel="stylesheet" href="../User/assets/css/checkout.css"/>
+    <link rel="stylesheet" href="../User/assets/css/index.css"/>
 
     <style>
-        .order-address {
-            padding: 15px 20px;
-            border-top: 1px solid #f0f0f0;
-            margin-top: 10px;
+        :root {
+            --primary-color: #00b3ff;
+            --bg-card: #1a1a1a;
+            --bg-input: #262626;
+            --text-muted: rgba(250, 250, 250, 0.6);
+            --border-light: rgba(255, 255, 255, 0.08);
         }
 
-        .order-address h4 {
+        .user-dashboard-wrapper {
+            display: flex;
+            min-height: 80vh;
+            margin-top: -10px;
+            background-color: var(--bg-card);
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-light);
+            overflow: hidden;
+        }
+
+
+        .user-sidebar {
+            flex-shrink: 0;
+            width: 280px;
+            background-color: #141414;
+            border-right: 1px solid var(--border-light);
+            display: flex;
+            flex-direction: column;
+            padding: 3rem 1.5rem;
+        }
+
+        .user-menu {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .user-menu li a {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.4rem 2rem;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 1.6rem;
+            font-weight: 500;
+            border-radius: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .user-menu li a i {
+            width: 20px;
+            text-align: center;
+        }
+
+        .user-menu li a:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: #fff;
+            transform: translateX(5px);
+        }
+
+        .user-menu li a.active {
+            background: linear-gradient(90deg, rgba(0, 179, 255, 0.15) 0%, rgba(0, 179, 255, 0) 100%);
+            color: var(--primary-color);
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .user-menu li a.logout-btn:hover {
+            background-color: rgba(244, 67, 54, 0.1);
+            color: #f44336;
+        }
+
+        /* --- 2. CONTENT AREA --- */
+        .user-content {
+            flex-grow: 1;
+            padding: 4rem 5rem;
+            background-color: #1a1a1a;
+            overflow-y: auto;
+            height: 80vh;
+        }
+
+        .content-section {
+            display: none;
+            animation: fadeIn 0.4s ease-in-out;
+            padding-bottom: 3rem;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h3.section-title {
+            font-size: 2.8rem;
+            font-weight: 700;
+            color: #fafafa;
+            margin-bottom: 0.8rem;
+            letter-spacing: -0.5px;
+        }
+
+        p.section-subtitle {
             font-size: 1.5rem;
-            font-weight: 600;
-            color: #333;
-            margin-bottom: 8px;
+            color: var(--text-muted);
+            margin-bottom: 3.5rem;
         }
 
-        .order-address p {
-            font-size: 1.4rem;
-            color: #555;
-            line-height: 1.6;
-            margin: 0;
-            white-space: pre-line;
+        /* --- 3. PROFILE FORM --- */
+        .profile-form form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2.5rem;
         }
+
+        .profile-form .full-width {
+            grid-column: span 2;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .form-group span {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: rgba(250, 250, 250, 0.9);
+            margin-left: 0.5rem;
+        }
+
+        .profile-form input,
+        .profile-form textarea {
+            width: 100%;
+            padding: 1.4rem 2rem;
+            background-color: var(--bg-input);
+            border: 1px solid var(--border-light);
+            border-radius: 12px;
+            color: #fff;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .profile-form input:disabled {
+            background-color: #1f1f1f;
+            color: rgba(255,255,255,0.3);
+            cursor: not-allowed;
+            border-color: transparent;
+        }
+
+        .profile-form input:focus,
+        .profile-form textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(0, 179, 255, 0.1);
+            background-color: #2a2a2a;
+        }
+
+        .btn-save {
+            grid-column: span 2;
+            width: fit-content;
+            padding: 0 4rem;
+            height: 5rem;
+            margin-top: 1rem;
+            background: linear-gradient(135deg, #00b3ff 0%, #007aff 100%);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.6rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            box-shadow: 0 4px 15px rgba(0, 179, 255, 0.3);
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            background: white;
+             color: #00b3ff;
+        }
+
+        /* --- 4. ORDER HISTORY --- */
+        .order-history .oder-wrapper {
+            border: none;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+        }
+
+        .history-card {
+            background-color: #202020;
+            border: 1px solid var(--border-light);
+            border-radius: 16px;
+            padding: 2.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+        }
+
+        .history-card:hover {
+            border-color: rgba(0, 179, 255, 0.3);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .history-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 2rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            margin-bottom: 2rem;
+        }
+
+        .history-id {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .history-id h4 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            letter-spacing: 0.5px;
+        }
+
+        .history-id p {
+            font-size: 1.3rem;
+            color: var(--text-muted);
+            font-style: italic;
+        }
+
+        .status-badge {
+            font-size: 1.3rem;
+            font-weight: 600;
+            padding: 0.8rem 1.6rem;
+            border-radius: 30px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            letter-spacing: 0.5px;
+        }
+
+        .status-badge.processing { background: rgba(255, 152, 0, 0.1); color: #ff9800; border: 1px solid rgba(255, 152, 0, 0.2); }
+        .status-badge.delivered { background: rgba(76, 175, 80, 0.1); color: #4caf50; border: 1px solid rgba(76, 175, 80, 0.2); }
+        .status-badge.canceled { background: rgba(244, 67, 54, 0.1); color: #f44336; border: 1px solid rgba(244, 67, 54, 0.2); }
+
+        .history-items {
+            display: flex;
+            flex-direction: column;
+            gap: 0;
+        }
+
+        .history-item {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            padding: 1.5rem 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.05);
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+
+        .history-item:first-child {
+            padding-top: 0;
+        }
+
+        .history-item img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 12px;
+            background-color: #333;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .history-item-info {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            gap: 0.6rem;
+        }
+
+        .history-item-name {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: #fafafa;
+        }
+
+        .history-item-meta {
+            font-size: 1.4rem;
+            color: var(--text-muted);
+            font-family: monospace;
+        }
+
+        .history-footer {
+            margin-top: 2.5rem;
+            padding-top: 2rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .order-address-summary {
+            font-size: 1.3rem;
+            color: rgba(255,255,255,0.5);
+            max-width: 50%;
+            line-height: 1.5;
+        }
+
+        .history-action-group {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: flex-end;
+            width: auto;
+        }
+
+        .history-total {
+            font-size: 1.6rem;
+            color: var(--text-muted);
+        }
+
+        .history-total span {
+            color: #fff;
+            font-weight: 700;
+            font-size: 2.2rem;
+            margin-left: 1rem;
+            text-shadow: 0 0 10px rgba(255,255,255,0.1);
+        }
+
+        .btn-cancel-order {
+            padding: 1rem 2rem;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid #d32f2f;
+            color: #ff6b6b;
+            font-size: 1.4rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-cancel-order:hover:not(:disabled) {
+            background: #d32f2f;
+            color: white;
+            box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
+        }
+
+        .btn-cancel-order:disabled {
+            border-color: #333;
+            background-color: #2a2a2a;
+            color: #555;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+
+        @media (max-width: 992px) {
+            .user-dashboard-wrapper {
+                flex-direction: column;
+                height: auto;
+            }
+
+            .user-content {
+                height: auto;
+                padding: 3rem 2rem;
+            }
+
+            .user-sidebar {
+                width: 100%;
+                border-right: none;
+                border-bottom: 1px solid var(--border-light);
+                padding: 1.5rem;
+            }
+
+            .user-menu {
+                flex-direction: row;
+                overflow-x: auto;
+                padding-bottom: 5px;
+            }
+
+            .user-menu li a {
+                white-space: nowrap;
+                padding: 1rem 1.5rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .profile-form form {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+
+            .profile-form .full-width, .btn-save {
+                grid-column: span 1;
+            }
+
+            .history-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1.5rem;
+            }
+
+            .status-badge {
+                align-self: flex-start;
+            }
+
+            .history-footer {
+                flex-direction: column-reverse;
+                gap: 2rem;
+                align-items: flex-start;
+            }
+
+            .order-address-summary {
+                max-width: 100%;
+                border-top: 1px dashed rgba(255,255,255,0.1);
+                padding-top: 1.5rem;
+                width: 100%;
+            }
+
+            .history-action-group {
+                width: 100%;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+            }
+
+            .btn-cancel-order {
+                padding: 0.8rem 1.5rem;
+            }
+        }
+
+
+        .user-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .user-content::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            margin: 10px 0;
+            border-radius: 10px;
+        }
+        .user-content::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 10px;
+            border: 2px solid rgba(0,0,0,0);
+            background-clip: padding-box;
+        }
+        .user-content::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+
+        .alert {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            transition: all 0.3s ease;
+        }
+
     </style>
 </head>
 
@@ -47,17 +503,78 @@
             </a>
         </div>
 
-        <label for="search" class="search">
-            <a href="./SearchProduct.html">
-                <i class="fa fa-magnifying-glass icon"></i
-                ></a>
-            <input
-                    name="search"
-                    type="text"
-                    id="search"
-                    placeholder="Search gadgets, devices"
-            />
-        </label>
+        <div class="advanced-search-wrapper">
+
+            <div class="search-bar-main">
+                <a href="./SearchProduct.html" class="search-icon-link">
+                    <i class="fa fa-magnifying-glass icon"></i>
+                </a>
+
+                <label for="search" class="search-input-area">
+                    <input
+                            name="search"
+                            type="text"
+                            id="search"
+                            placeholder="Search gadgets, devices"
+                    />
+                </label>
+
+                <div class="category-dropdown-search">
+                    <div class="category-display">
+                        Filters <i class="fa fa-chevron-down"></i>
+                    </div>
+
+                    <div class="submenu-search">
+                        <ul class="filter-options-list">
+                            <li>
+                                <h4 style="color: #00b3ff; margin-bottom: 0.8rem; font-weight: 600;">Category</h4>
+                                <div class="filter-group">
+                                    <label><input type="checkbox" value="laptop"> Laptops</label>
+                                    <label><input type="checkbox" value="audio"> Audio (Headphones, Speakers)</label>
+                                    <label><input type="checkbox" value="wearables"> Wearables (Smartwatches)</label>
+                                    <label><input type="checkbox" value="drone"> Flycam & Drones</label>
+                                    <label><input type="checkbox" value="pc-components"> PC Components (Monitor, SSD)</label>
+                                    <label><input type="checkbox" value="accessories"> Accessories (Hubs, Chargers)</label>
+                                </div>
+                            </li>
+                            <li style="border-bottom: 1px solid #333; margin: 0.8rem 0;"></li>
+
+                            <li>
+                                <h4 style="color: #00b3ff; margin-bottom: 0.8rem; font-weight: 600;">Price Range</h4>
+                                <div class="filter-group">
+                                    <label><input type="radio" name="price" value="0-100"> $0 - $100</label>
+                                    <label><input type="radio" name="price" value="101-500"> $101 - $500</label>
+                                    <label><input type="radio" name="price" value="501-plus"> $501+</label>
+                                </div>
+                            </li>
+                            <li style="border-bottom: 1px solid #333; margin: 0.8rem 0;"></li>
+
+                            <li>
+                                <h4 style="color: #00b3ff; margin-bottom: 0.8rem; font-weight: 600;">Brand</h4>
+                                <div class="filter-group">
+                                    <label><input type="checkbox" value="apple"> Apple</label>
+                                    <label><input type="checkbox" value="samsung"> Samsung</label>
+                                    <label><input type="checkbox" value="asus"> Asus</label>
+                                    <label><input type="checkbox" value="dji"> DJI</label>
+                                    <label><input type="checkbox" value="sony"> Sony</label>
+                                    <label><input type="checkbox" value="logitech"> Logitech</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="active-filters-container" style="display: none;">
+                <span class="filter-title">Active Filters:</span>
+                <div class="filter-tags-display">
+                </div>
+                <button class="clear-all-tags-btn" style="display:none;" title="Clear All Filters">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+        </div>
 
         <ul class="hotlinks">
             <li>
@@ -85,8 +602,7 @@
                             <li>
                                 <a
                                         href="./DiscountsSeeAllHighToLow.html"
-                                >
-                                    Discounts
+                                >Discounts
                                 </a>
                             </li>
                         </ul>
@@ -95,7 +611,7 @@
             </li>
             <li><a href="./About.html">About</a></li>
             <li><a href="./checkout.html">Cart</a></li>
-            <li><a style="text-decoration: underline" href="#">Hello User001</a></li>
+            <li><a style="text-decoration: underline" href="./UserInfo.html">Hello User001</a></li>
         </ul>
     </nav>
 </div>
@@ -103,166 +619,168 @@
 <div class="container">
     <div class="content">
         <div class="alert"
-             style="display: none; background-color: #2e7d32; color: white; padding: 1rem 2rem; border-radius: 8px;">
-            Cancel successfully!
+             style="display: none; background-color: #2e7d32; color: white; padding: 1.5rem 3rem; border-radius: 50px; box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-size: 1.6rem; font-weight: 500;">
+            <i class="fa fa-check-circle" style="margin-right: 8px;"></i> Cancel successfully!
         </div>
 
-        <div class="checkout-wrapper">
+        <div class="user-dashboard-wrapper">
+            <div class="user-sidebar">
+                <ul class="user-menu">
+                    <li>
+                        <a href="#profile" class="active" data-section="profile">
+                            <i class="fa fa-user-circle"></i> My Profile
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#orders" data-section="orders">
+                            <i class="fa fa-box-open"></i> Order History
+                        </a>
+                    </li>
+                    <li style="margin-top: auto;">
+                        <a href="./Login.html" class="logout-btn" style="color: #f44336; border-left: 3px solid transparent;">
+                            <i class="fa fa-sign-out-alt"></i> Logout
+                        </a>
+                    </li>
+                </ul>
+            </div>
 
-            <div class="checkout-summary-block">
-                <span class="tittle">Order History</span>
+            <div class="user-content">
 
-                <div class="oder-wrapper">
-                    <div class=" order-list-body">
+                <div id="profile" class="content-section active profile-form">
+                    <h3 class="section-title">Account Settings</h3>
+                    <p class="section-subtitle">Manage your personal information and delivery details</p>
 
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="header-left">
-                                    <span class="order-id">Order #10521</span>
-                                    <span class="order-date">07-Nov-2025</span>
+                    <form id="profileForm">
+                        <label class="form-group">
+                            <span>Full Name</span>
+                            <input type="text" name="fullName" value="User001" required>
+                        </label>
+
+                        <label class="form-group">
+                            <span>Email Address</span>
+                            <input type="email" name="email" value="user001@huka.com" disabled>
+                        </label>
+
+                        <label class="form-group">
+                            <span>Phone Number</span>
+                            <input type="tel" name="phone" value="090 123 4567" required>
+                        </label>
+
+                        <label class="form-group">
+                            <span>Current Password <small style="color: #666; font-weight: 400">(Required to save)</small></span>
+                            <input type="password" name="currentPassword" placeholder="••••••••" required>
+                        </label>
+
+                        <label class="form-group full-width">
+                            <span>Shipping Address</span>
+                            <textarea name="address" rows="3" required>150 đường Nguyễn Huệ, Phường Sài Gòn, Quận 1, TP. Hồ Chí Minh.</textarea>
+                        </label>
+
+                        <button type="submit" class="btn-save">Save Changes</button>
+                    </form>
+                </div>
+
+                <div id="orders" class="content-section order-history">
+                    <h3 class="section-title">Order History</h3>
+                    <p class="section-subtitle">Track your past and current orders</p>
+
+                    <div class="oder-wrapper">
+                        <div class="history-card">
+                            <div class="history-header">
+                                <div class="history-id">
+                                    <h4>Order #10521</h4>
+                                    <p>Placed on 07-Nov-2025</p>
                                 </div>
-                                <span class="order-status processing">Processing</span>
+                                <span class="status-badge processing"><i class="fa fa-clock"></i> Processing</span>
                             </div>
-                            <div class="order-item-list">
-                                <div class="card-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1605134513573-384dcf99a44c?w=400"
-                                         alt="product-img"/>
-                                    <div class="info">
-                                        <h2 class="product-name">Gaming Laptop</h2>
-                                        <div class="price-quatity">
-                                            <span class="product-price">$ 999</span>
-                                            <span class="quantity"> &times; 1</span>
-                                        </div>
+
+                            <div class="history-items">
+                                <div class="history-item">
+                                    <img src="https://images.unsplash.com/photo-1605134513573-384dcf99a44c?w=400" alt="product">
+                                    <div class="history-item-info">
+                                        <h5 class="history-item-name">Gaming Laptop</h5>
+                                        <div class="history-item-meta">$999 x 1</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="order-address">
-                                <h4>Address:</h4>
-                                <p>
-                                    User001
-                                    150 đường Nguyễn Huệ, Phường Bến Nghé
-                                    Quận 1, TP. Hồ Chí Minh
-                                </p>
-                            </div>
-                            <div class="order-footer">
-                                <span class="order-total">Total: $ 999</span>
-                                <button class="cancel-btn">Cancel Order</button>
+                            <div class="history-footer">
+                                <div class="order-address-summary">
+                                    <i class="fa fa-map-marker-alt" style="margin-right: 8px; color: #00b3ff;"></i>
+                                    150 đường Nguyễn Huệ, Phường Sài Gòn, Quận 1, TP. Hồ Chí Minh.
+                                </div>
+                                <div class="history-action-group">
+                                    <div class="history-total">Total: <span>$999</span></div>
+                                    <button class="btn-cancel-order"><i class="fa fa-times"></i> Cancel Order</button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="header-left">
-                                    <span class="order-id">Order #10488</span>
-                                    <span class="order-date">01-Nov-2025</span>
+                        <div class="history-card">
+                            <div class="history-header">
+                                <div class="history-id">
+                                    <h4>Order #10488</h4>
+                                    <p>Placed on 01-Nov-2025</p>
                                 </div>
-                                <span class="order-status delivered">Delivered</span>
+                                <span class="status-badge delivered"><i class="fa fa-check"></i> Delivered</span>
                             </div>
-                            <div class="order-item-list">
-                                <div class="card-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1626958390898-162d3577f293?w=400"
-                                         alt="product-img"/>
-                                    <div class="info">
-                                        <h2 class="product-name">Mechanical Keyboard</h2>
-                                        <div class="price-quatity">
-                                            <span class="product-price">$ 120</span>
-                                            <span class="quantity"> &times; 2</span>
-                                        </div>
+
+                            <div class="history-items">
+                                <div class="history-item">
+                                    <img src="https://images.unsplash.com/photo-1626958390898-162d3577f293?w=400" alt="product">
+                                    <div class="history-item-info">
+                                        <h5 class="history-item-name">Mechanical Keyboard</h5>
+                                        <div class="history-item-meta">$120 x 2</div>
                                     </div>
                                 </div>
-                                <div class="card-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1632160871990-be30194885aa?auto=format&fit=crop&q=60&w=500"
-                                         alt="product-img"/>
-                                    <div class="info">
-                                        <h2 class="product-name">Wireless Mouse</h2>
-                                        <div class="price-quatity">
-                                            <span class="product-price">$ 75</span>
-                                            <span class="quantity"> &times; 1</span>
-                                        </div>
+                                <div class="history-item">
+                                    <img src="https://images.unsplash.com/photo-1632160871990-be30194885aa?auto=format&fit=crop&q=60&w=500" alt="product">
+                                    <div class="history-item-info">
+                                        <h5 class="history-item-name">Wireless Mouse</h5>
+                                        <div class="history-item-meta">$75 x 1</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="order-address">
-                                <h4>Address:</h4>
-                                <p>
-                                    User001
-                                    Nguyễn Trãi, q.5
-                                </p>
-                            </div>
-                            <div class="order-footer">
-                                <span class="order-total">Total: $ 315</span>
-                                <button class="cancel-btn" disabled>Cancel Order</button>
+                            <div class="history-footer">
+                                <div class="order-address-summary">
+                                    <i class="fa fa-map-marker-alt" style="margin-right: 8px; color: #00b3ff;"></i>
+                                    150 đường Nguyễn Huệ, Phường Sài Gòn, Quận 1, TP. Hồ Chí Minh.
+                                </div>
+                                <div class="history-action-group">
+                                    <div class="history-total">Total: <span>$315</span></div>
+                                    <button class="btn-cancel-order" disabled><i class="fa fa-times"></i> Cancel Order</button>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="header-left">
-                                    <span class="order-id">Order #10452</span>
-                                    <span class="order-date">28-Oct-2025</span>
+                        <div class="history-card">
+                            <div class="history-header">
+                                <div class="history-id">
+                                    <h4>Order #10452</h4>
+                                    <p>Placed on 28-Oct-2025</p>
                                 </div>
-                                <span class="order-status canceled">Canceled</span>
+                                <span class="status-badge canceled"><i class="fa fa-times"></i> Canceled</span>
                             </div>
-                            <div class="order-item-list">
-                                <div class="card-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400"
-                                         alt="product-img"/>
-                                    <div class="info">
-                                        <h2 class="product-name">4K Monitor</h2>
-                                        <div class="price-quatity">
-                                            <span class="product-price">$ 450</span>
-                                            <span class="quantity"> &times; 1</span>
-                                        </div>
+
+                            <div class="history-items">
+                                <div class="history-item">
+                                    <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=400" alt="product">
+                                    <div class="history-item-info">
+                                        <h5 class="history-item-name">4K Monitor</h5>
+                                        <div class="history-item-meta">$450 x 1</div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="order-address">
-                                <h4>Address</h4>
-                                <p>
-                                    User001
-                                    Đa kao ,q.3
-                                </p>
-                            </div>
-                            <div class="order-footer">
-                                <span class="order-total">Total: $ 450</span>
-                            </div>
-                        </div>
-
-                        <div class="order-card">
-                            <div class="order-header">
-                                <div class="header-left">
-                                    <span class="order-id">Order #10451</span>
-                                    <span class="order-date">27-Oct-2025</span>
+                            <div class="history-footer">
+                                <div class="order-address-summary">
+                                    <i class="fa fa-map-marker-alt" style="margin-right: 8px; color: #00b3ff;"></i>
+                                    150 đường Nguyễn Huệ, Phường Sài Gòn, Quận 1, TP. Hồ Chí Minh.
                                 </div>
-                                <span class="order-status delivered">Delivered</span>
-                            </div>
-                            <div class="order-item-list">
-                                <div class="card-wrapper">
-                                    <img src="https://images.unsplash.com/photo-1511385348-a52b4a160dc2?w=400"
-                                         alt="product-img"/>
-                                    <div class="info">
-                                        <h2 class="product-name">Gaming Chair</h2>
-                                        <div class="price-quatity">
-                                            <span class="product-price">$ 350</span>
-                                            <span class="quantity"> &times; 1</span>
-                                        </div>
-                                    </div>
+                                <div class="history-action-group">
+                                    <div class="history-total">Total: <span>$450</span></div>
                                 </div>
-                            </div>
-
-                            <div class="order-address">
-                                <h4>Address:</h4>
-                                <p>
-                                    User001
-                                    Lê Trọng Tấn, Tân Phú, Tp. Hồ Chí Minh
-                                </p>
-                            </div>
-                            <div class="order-footer">
-                                <span class="order-total">Total: $ 350</span>
-                                <button class="cancel-btn" disabled>Cancel Order</button>
                             </div>
                         </div>
 
@@ -271,9 +789,7 @@
 
             </div>
         </div>
-        <div style="width: 100%; text-align: end; padding: 10px;"><a  href="Login.html">
-            <button>Logout</button>
-        </a></div>
+
     </div>
 </div>
 
@@ -291,64 +807,96 @@
         <div class="block-right">
             <ul class="product">
                 <h4>Product</h4>
-                <li>
-                    <a href="./HotDealSeeAllHighToLow.html"
-                    >Hot Deals</a
-                    >
-                </li>
-                <li>
-                    <a href="./DiscountsSeeAllHighToLow.html"
-                    >Discounts</a
-                    >
-                </li>
-                <li>
-                    <a href="./NewArrivalsSeeAllHighToLow.html"
-                    >New Arrivals</a
-                    >
-                </li>
-                <li>
-                    <a href="./DiscountsSeeAllHighToLow.html"
-                    >Black Friday Deals</a
-                    >
-                </li>
+                <li><a href="./HotDealSeeAllHighToLow.html">Hot Deals</a></li>
+                <li><a href="./DiscountsSeeAllHighToLow.html">Discounts</a></li>
+                <li><a href="./NewArrivalsSeeAllHighToLow.html">New Arrivals</a></li>
+                <li><a href="./DiscountsSeeAllHighToLow.html">Black Friday Deals</a></li>
             </ul>
 
             <ul class="socials">
                 <h4>Socials</h4>
-                <li>
-                    <a
-                            href="https://x.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                    >Twitter</a
-                    >
-                </li>
-                <li>
-                    <a
-                            href="https://www.instagram.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                    >Instagram</a
-                    >
-                </li>
-                <li>
-                    <a
-                            href="https://www.facebook.com/"
-                            target="_blank"
-                            rel="noopener noreferrer"
-                    >Facebook</a
-                    >
-                </li>
+                <li><a href="https://x.com/" target="_blank">Twitter</a></li>
+                <li><a href="https://www.instagram.com/" target="_blank">Instagram</a></li>
+                <li><a href="https://www.facebook.com/" target="_blank">Facebook</a></li>
             </ul>
 
             <ul class="information">
                 <h4>Information</h4>
-
                 <li><a href="./About.html">About</a></li>
             </ul>
         </div>
     </div>
 </footer>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const menuLinks = document.querySelectorAll('.user-menu a');
+        const sections = document.querySelectorAll('.content-section');
+        const profileForm = document.getElementById('profileForm');
+
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (!this.getAttribute('href').startsWith('#')) return;
+                e.preventDefault();
+
+                const targetId = this.getAttribute('data-section');
+
+                menuLinks.forEach(l => l.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+
+                this.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+            });
+        });
+
+
+        if (!window.location.hash) {
+            const profileLink = document.querySelector('.user-menu a[data-section="profile"]');
+            if(profileLink) profileLink.classList.add('active');
+            const profileSec = document.getElementById('profile');
+            if(profileSec) profileSec.classList.add('active');
+        } else {
+            const hash = window.location.hash.substring(1);
+            const link = document.querySelector(`.user-menu a[data-section="${hash}"]`);
+            if (link) link.click();
+        }
+
+        if (profileForm) {
+            profileForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                const currentPassword = this.querySelector('input[name="currentPassword"]').value;
+                if (currentPassword.length > 0) {
+                    alert('Profile updated successfully! (Demo Mode)');
+                    this.querySelector('input[name="currentPassword"]').value = '';
+                } else {
+                    alert('Please enter your current password to save changes.');
+                }
+            });
+        }
+
+
+        const cancelButtons = document.querySelectorAll('.btn-cancel-order');
+        const alertToast = document.querySelector('.alert');
+
+        cancelButtons.forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+
+                if(this.hasAttribute('disabled')) return;
+
+
+                alertToast.style.display = 'block';
+
+                setTimeout(() => {
+                    alertToast.style.display = 'none';
+                }, 3000);
+
+
+            });
+        });
+    });
+</script>
 <script src="../User/assets/js/index.js"></script>
 </body>
 </html>

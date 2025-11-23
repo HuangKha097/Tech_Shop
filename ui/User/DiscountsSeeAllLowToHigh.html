@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="../User/assets/css/reset.css"/>
     <link rel="stylesheet" href="../User/assets/css/main.css"/>
     <link rel="stylesheet" href="../User/assets/css/NewArrivalsSeeAll.css"/>
+    <link rel="stylesheet" href="../User/assets/css/index.css"/>
 </head>
 
 <body>
@@ -29,17 +30,78 @@
             </a>
         </div>
 
-        <label for="search" class="search">
-            <a href="./SearchProduct.html">
-                <i class="fa fa-magnifying-glass icon"></i
-                ></a>
-            <input
-                    name="search"
-                    type="text"
-                    id="search"
-                    placeholder="Search gadgets, devices"
-            />
-        </label>
+        <div class="advanced-search-wrapper">
+
+            <div class="search-bar-main">
+                <a href="./SearchProduct.html" class="search-icon-link">
+                    <i class="fa fa-magnifying-glass icon"></i>
+                </a>
+
+                <label for="search" class="search-input-area">
+                    <input
+                            name="search"
+                            type="text"
+                            id="search"
+                            placeholder="Search gadgets, devices"
+                    />
+                </label>
+
+                <div class="category-dropdown-search">
+                    <div class="category-display">
+                        Filters <i class="fa fa-chevron-down"></i>
+                    </div>
+
+                    <div class="submenu-search">
+                        <ul class="filter-options-list">
+                            <li>
+                                <h4 style="color: #00b3ff; margin-bottom: 0.8rem; font-weight: 600;">Category</h4>
+                                <div class="filter-group">
+                                    <label><input type="checkbox" value="laptop"> Laptops</label>
+                                    <label><input type="checkbox" value="audio"> Audio (Headphones, Speakers)</label>
+                                    <label><input type="checkbox" value="wearables"> Wearables (Smartwatches)</label>
+                                    <label><input type="checkbox" value="drone"> Flycam & Drones</label>
+                                    <label><input type="checkbox" value="pc-components"> PC Components (Monitor, SSD)</label>
+                                    <label><input type="checkbox" value="accessories"> Accessories (Hubs, Chargers)</label>
+                                </div>
+                            </li>
+                            <li style="border-bottom: 1px solid #333; margin: 0.8rem 0;"></li>
+
+                            <li>
+                                <h4 style="color: #00b3ff; margin-bottom: 0.8rem; font-weight: 600;">Price Range</h4>
+                                <div class="filter-group">
+                                    <label><input type="radio" name="price" value="0-100"> $0 - $100</label>
+                                    <label><input type="radio" name="price" value="101-500"> $101 - $500</label>
+                                    <label><input type="radio" name="price" value="501-plus"> $501+</label>
+                                </div>
+                            </li>
+                            <li style="border-bottom: 1px solid #333; margin: 0.8rem 0;"></li>
+
+                            <li>
+                                <h4 style="color: #00b3ff; margin-bottom: 0.8rem; font-weight: 600;">Brand</h4>
+                                <div class="filter-group">
+                                    <label><input type="checkbox" value="apple"> Apple</label>
+                                    <label><input type="checkbox" value="samsung"> Samsung</label>
+                                    <label><input type="checkbox" value="asus"> Asus</label>
+                                    <label><input type="checkbox" value="dji"> DJI</label>
+                                    <label><input type="checkbox" value="sony"> Sony</label>
+                                    <label><input type="checkbox" value="logitech"> Logitech</label>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="active-filters-container" style="display: none;">
+                <span class="filter-title">Active Filters:</span>
+                <div class="filter-tags-display">
+                </div>
+                <button class="clear-all-tags-btn" style="display:none;" title="Clear All Filters">
+                    <i class="fa fa-times"></i>
+                </button>
+            </div>
+
+        </div>
 
         <ul class="hotlinks">
             <li>
@@ -85,12 +147,7 @@
     <!-- Header Section -->
     <div class="header">
         <h1 class="title">As Hot As They Come. Shop Now!</h1>
-        <label class="search">
-            <a href="./SearchProduct.html">
-                <i class="fa fa-magnifying-glass icon"></i
-                ></a>
-            <input type="text" placeholder="Search gadgets, devices"/>
-        </label>
+
     </div>
 
     <!-- Product Section -->

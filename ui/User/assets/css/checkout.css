@@ -1,6 +1,3 @@
-/* =================================== */
-/* === TOÀN BỘ NỘI DUNG checkout.css === */
-/* =================================== */
 
 body {
     background-color: #0d0d0d;
@@ -513,14 +510,12 @@ body {
     }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
-    /* Responsive cho Navbar */
+
     .navbar-wrapper {
         padding: 1rem 3rem;
     }
 
-    /* Responsive cho Footer */
     .footer-container .block-right {
         flex-direction: column;
         align-items: center;
@@ -547,7 +542,7 @@ body {
         flex-direction: column;
     }
 
-    /* Responsive cho Checkout */
+
     .container .content {
         padding-left: 2rem;
         padding-right: 2rem;
@@ -564,9 +559,7 @@ body {
 
 
 
-/* --- CỘT PHẢI: ORDER HISTORY --- */
 
-/* Style cho list đơn hàng, dùng lại từ .oder-wrapper .body */
 .checkout-summary-block{
 
     margin-top: -80px;
@@ -583,7 +576,7 @@ body {
     overflow:auto;
 }
 
-/* Style cho mỗi card đơn hàng */
+
 .order-card {
     background-color: rgba(255, 255, 255, 0.04);
     border: 1px solid rgba(255, 255, 255, 0.1);
@@ -627,7 +620,7 @@ body {
     text-transform: capitalize;
 }
 
-/* Màu sắc cho các trạng thái */
+
 .order-status.processing {
     background-color: rgba(255, 152, 0, 0.2); /* Cam */
     color: #ff9800;
@@ -646,7 +639,6 @@ body {
     border: 1px solid #f44336;
 }
 
-/* List sản phẩm trong đơn hàng */
 .order-item-list {
     display: flex;
     flex-direction: column;
@@ -656,7 +648,7 @@ body {
     padding-right: 1rem; /* Thêm padding cho thanh cuộn */
 }
 
-/* Tái sử dụng .card-wrapper nhưng điều chỉnh lại */
+
 .order-item-list .card-wrapper {
     height: 6rem; /* Tăng chiều cao 1 chút */
 }
