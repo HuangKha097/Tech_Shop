@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Inventory Report</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* CSS riêng cho Inventory Report Pro */
+        .sku-text {
+            font-family: monospace;
+            background: #edf2f7;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+        .stock-val-positive { color: #2f855a; font-weight: 600; } /* Xanh lá */
+        .stock-val-negative { color: #c53030; font-weight: 600; } /* Đỏ */
+
+        .stock-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+        .stock-ok { background-color: #c6f6d5; color: #22543d; }
+        .stock-low { background-color: #feebc8; color: #744210; }
+        .stock-out { background-color: #fed7d7; color: #822727; }
+
+        .report-summary-box {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .summary-item span { font-size: 1.2rem; color: var(--text-secondary); }
+        .summary-item strong { font-size: 1.4rem; color: var(--text-primary); }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <img style="width: 200px;" src="../../ui/User/assets/images/2.png" alt="logo">
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html"><i class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html"><i class="fa-solid fa-box-archive"></i><span>Products</span></a></li>
+            <li class="nav-item"><a href="imports.html"><i class="fa-solid fa-file-import"></i><span>Imports</span></a></li>
+            <li class="nav-item"><a href="price-management.html"><i class="fa-solid fa-tags"></i><span>Price & Profit</span></a></li>
+            <li class="nav-item"><a href="inventory-report.html" class="active"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
+            <li class="nav-item"><a href="categories.html"><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a></li>
+
+            <li class="nav-item"><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a></li>
+            <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-users"></i><span>Customers</span></a></li>
+            <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-line"></i><span>Sales Reports</span></a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <ul class="nav-list"><li class="nav-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li></ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="app-header">
+            <div class="header-search"><i class="fa-solid fa-search"></i><input type="text" placeholder="Search stock..."></div>
+            <div class="header-right"><div class="profile-menu"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Avatar"></div></div>
+        </header>
+
+        <div class="page-content">
+            <div class="page-header">
+                <div>
+                    <h1>Inventory Movement Report</h1>
+                    <p>Track opening, incoming, outgoing, and closing stock.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-secondary" id="print-btn"><i class="fa-solid fa-print"></i> Print</button>
+                    <button class="btn btn-primary" id="export-btn" style="background-color: #2f855a;"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+                </div>
+            </div>
+
+            <div class="filters-bar" style="flex-wrap: wrap;">
+                <div class="filter-group" style="min-width: 150px;">
+                    <label>Warehouse</label>
+                    <select>
+                        <option>All Warehouses</option>
+                        <option>Main WH (HCM)</option>
+                        <option>Store WH</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="min-width: 150px;">
+                    <label>Category</label>
+                    <select>
+                        <option>All Categories</option>
+                        <option>Smartphones</option>
+                        <option>Laptops</option>
+                        <option>Accessories</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>From</label>
+                    <input type="date" value="2024-11-01">
+                </div>
+                <div class="filter-group">
+                    <label>To</label>
+                    <input type="date" value="2024-11-30">
+                </div>
+                <div class="filter-group" style="flex: 1;">
+                    <label>Search Product</label>
+                    <input type="text" placeholder="Name or SKU...">
+                </div>
+                <button class="btn btn-primary" id="apply-filter-btn" style="align-self: flex-end;">Apply Filter</button>
+            </div>
+
+            <!-- Stats Cards -->
+            <div class="stats-grid">
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <h4>Opening Stock</h4>
+                        <span class="stat-number">1,200</span>
+                        <small class="text-secondary">Units</small>
+                    </div>
+                    <div class="stat-icon blue"><i class="fa-solid fa-box-open"></i></div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <h4>Total In</h4>
+                        <span class="stat-number" style="color: #2f855a;">+ 150</span>
+                        <small class="text-secondary">Units</small>
+                    </div>
+                    <div class="stat-icon green"><i class="fa-solid fa-arrow-down"></i></div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <h4>Total Out</h4>
+                        <span class="stat-number" style="color: #c53030;">- 103</span>
+                        <small class="text-secondary">Units</small>
+                    </div>
+                    <div class="stat-icon orange"><i class="fa-solid fa-arrow-up"></i></div>
+                </div>
+                <div class="card stat-card">
+                    <div class="stat-info">
+                        <h4>Closing Stock</h4>
+                        <span class="stat-number">1,247</span>
+                        <small class="text-secondary">Value: $248k</small>
+                    </div>
+                    <div class="stat-icon purple"><i class="fa-solid fa-warehouse"></i></div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th style="width: 30%;">Product</th>
+                        <th>Opening</th>
+                        <th>In</th>
+                        <th>Out</th>
+                        <th>Closing</th>
+                        <th>Unit Cost</th>
+                        <th>Total Value</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <!-- Item 1 -->
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://images.unsplash.com/photo-1590212151175-e58edd96185b?w=100" alt="img">
+                                <div>
+                                    <span class="name">Monitor 27"</span>
+                                    <span class="id"><span class="sku-text">MON-001</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>40</td>
+                        <td class="stock-val-positive">+ 10</td>
+                        <td class="stock-val-negative">- 5</td>
+                        <td><strong>45</strong></td>
+                        <td>$150.00</td>
+                        <td>$6,750</td>
+                        <td><span class="stock-badge stock-ok">In Stock</span></td>
+                    </tr>
+                    <!-- Item 2 -->
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://images.unsplash.com/photo-1632156752398-2b2cb4e6c907?w=100" alt="img">
+                                <div>
+                                    <span class="name">Power Bank</span>
+                                    <span class="id"><span class="sku-text">PB-20K</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>25</td>
+                        <td class="stock-val-positive">0</td>
+                        <td class="stock-val-negative">- 2</td>
+                        <td><strong>23</strong></td>
+                        <td>$25.00</td>
+                        <td>$575</td>
+                        <td><span class="stock-badge stock-ok">In Stock</span></td>
+                    </tr>
+                    <!-- Item 3 (Low Stock) -->
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://images.unsplash.com/photo-1702471897393-47ec1ba1192b?w=100" alt="img">
+                                <div>
+                                    <span class="name">VR Headset</span>
+                                    <span class="id"><span class="sku-text">VR-PRO</span></span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>8</td>
+                        <td class="stock-val-positive">0</td>
+                        <td class="stock-val-negative">- 5</td>
+                        <td><strong>3</strong></td>
+                        <td>$380.00</td>
+                        <td>$1,140</td>
+                        <td><span class="stock-badge stock-low">Low Stock</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <span>Showing 1 to 3 of 142 records</span>
+                    <div class="pagination-controls">
+                        <button disabled><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>...</button>
+                        <button><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="success-toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span>Action completed successfully!</span>
+</div>
+
+<script src="assets/js/main.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const successToast = document.getElementById("success-toast");
+        const exportBtn = document.getElementById("export-btn");
+        const printBtn = document.getElementById("print-btn");
+        const applyFilterBtn = document.getElementById("apply-filter-btn");
+        const pageBtns = document.querySelectorAll('.pagination-controls button');
+
+        // --- Helper: Toast ---
+        function showToast(message) {
+            if (!successToast) return;
+            const toastText = successToast.querySelector("span");
+            if(toastText) toastText.innerText = message;
+            successToast.classList.add("show");
+            setTimeout(() => {
+                successToast.classList.remove("show");
+            }, 3000);
+        }
+
+        // 1. Export Action
+        if(exportBtn) {
+            exportBtn.addEventListener("click", () => {
+                showToast("Generating Excel report...");
+            });
+        }
+
+        // 2. Print Action
+        if(printBtn) {
+            printBtn.addEventListener("click", () => {
+                showToast("Preparing print view...");
+            });
+        }
+
+        // 3. Apply Filter Action
+        if(applyFilterBtn) {
+            applyFilterBtn.addEventListener("click", () => {
+                showToast("Filters applied. Updating data...");
+            });
+        }
+
+        // 4. Pagination Action (Visual)
+        pageBtns.forEach(btn => {
+            if (!btn.querySelector('i') && btn.innerText !== "...") {
+                btn.addEventListener('click', function() {
+                    pageBtns.forEach(b => {
+                        if(!b.querySelector('i')) b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                    // showToast("Loading page " + this.innerText + "..."); // Optional toast
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>

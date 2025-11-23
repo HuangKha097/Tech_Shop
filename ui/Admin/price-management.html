@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Price Management</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/products.css">
+    <link rel="stylesheet" href="assets/css/forms.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* CSS riêng cho trang Price Management Pro */
+        .table-input {
+            width: 90px;
+            padding: 0.8rem;
+            border: 1px solid var(--border-color);
+            border-radius: 4px;
+            text-align: right;
+            font-weight: 600;
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+        }
+        .table-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+        }
+
+        .price-meta {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            margin-top: 4px;
+            display: block;
+        }
+
+        .profit-badge {
+            font-size: 1.1rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 600;
+            margin-left: 5px;
+        }
+        .profit-high { background-color: #c6f6d5; color: #22543d; } /* Xanh lá */
+        .profit-med { background-color: #bee3f8; color: #2a4365; }  /* Xanh dương */
+        .profit-low { background-color: #feebc8; color: #744210; }  /* Cam */
+
+        .sku-text {
+            font-family: monospace;
+            background: #edf2f7;
+            padding: 2px 4px;
+            border-radius: 3px;
+            font-size: 1.1rem;
+            color: #4a5568;
+        }
+
+        .stock-indicator {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+        }
+        .stock-indicator i {
+            font-size: 1rem;
+            margin-right: 4px;
+        }
+
+        /* Style cho bảng lịch sử trong Modal */
+        .history-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 1.3rem;
+        }
+        .history-table th {
+            text-align: left;
+            padding: 1rem;
+            background-color: #f7fafc;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-secondary);
+        }
+        .history-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+        .change-arrow {
+            color: var(--text-secondary);
+            margin: 0 5px;
+            font-size: 1rem;
+        }
+        .user-avatar-xs {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            vertical-align: middle;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <img style="width: 200px;" src="../../ui/User/assets/images/2.png" alt="logo">
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html"><i class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html"><i class="fa-solid fa-box-archive"></i><span>Products</span></a></li>
+            <li class="nav-item"><a href="imports.html"><i class="fa-solid fa-file-import"></i><span>Imports</span></a></li>
+            <li class="nav-item"><a href="price-management.html" class="active"><i class="fa-solid fa-tags"></i><span>Price & Profit</span></a></li>
+            <li class="nav-item"><a href="inventory-report.html"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
+            <li class="nav-item"><a href="categories.html" ><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a></li>
+
+            <li class="nav-item"><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a></li>
+            <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-users"></i><span>Customers</span></a></li>
+            <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-line"></i><span>Sales Reports</span></a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <ul class="nav-list"><li class="nav-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li></ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="app-header">
+            <div class="header-search"><i class="fa-solid fa-search"></i><input type="text" placeholder="Search product by name, SKU..."></div>
+            <div class="header-right"><div class="profile-menu"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Avatar"></div></div>
+        </header>
+
+        <div class="page-content">
+            <div class="page-header">
+                <div>
+                    <h1>Price & Profit Management</h1>
+                    <p>Adjust pricing strategies and monitor profit margins.</p>
+                </div>
+                <div style="display: flex; gap: 10px;">
+                    <button class="btn btn-secondary" id="export-btn"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
+                    <button class="btn btn-primary" id="save-all-btn"><i class="fa-solid fa-save"></i> Save All Changes</button>
+                </div>
+            </div>
+
+            <div class="filters-bar">
+                <div class="filter-group" style="flex: 1.5;">
+                    <label>Category</label>
+                    <select>
+                        <option>All Categories</option>
+                        <option>Smartphones</option>
+                        <option>Accessories</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="flex: 1.5;">
+                    <label>Margin Status</label>
+                    <select>
+                        <option>All Status</option>
+                        <option>High Margin (>50%)</option>
+                        <option>Low Margin (<20%)</option>
+                    </select>
+                </div>
+                <div class="filter-group" style="flex: 2;">
+                    <label>Search</label>
+                    <input type="text" placeholder="Product name...">
+                </div>
+                <button class="btn btn-primary" style="align-self: flex-end;">Filter</button>
+            </div>
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th style="width: 300px;">Product Info</th>
+                        <th>Cost (Avg)</th>
+                        <th>Margin %</th>
+                        <th>Profit</th>
+                        <th>Selling Price</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://images.unsplash.com/photo-1590212151175-e58edd96185b?w=100" alt="img">
+                                <div>
+                                    <span class="name">Monitor 27" 144Hz</span>
+                                    <span class="id"><span class="sku-text">MON-001</span></span>
+                                    <div class="stock-indicator"><i class="fa-solid fa-box"></i> Stock: 45</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$150.00</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <input type="number" value="52" class="table-input" style="width: 60px;">
+                                <span class="profit-badge profit-high">High</span>
+                            </div>
+                        </td>
+                        <td style="color: #2f855a; font-weight: 600;">+$79.00</td>
+                        <td>
+                            <input type="number" value="229.00" class="table-input">
+                            <span class="price-meta">Suggested: $225 - $235</span>
+                        </td>
+                        <td>
+                            <div class="action-icons">
+                                <i class="fa-solid fa-floppy-disk save-row-btn" title="Save this item" style="color: var(--primary-color);"></i>
+                                <i class="fa-solid fa-clock-rotate-left history-btn" title="Price History"></i>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://images.unsplash.com/photo-1632156752398-2b2cb4e6c907?w=100" alt="img">
+                                <div>
+                                    <span class="name">Power Bank 20k</span>
+                                    <span class="id"><span class="sku-text">PB-20K</span></span>
+                                    <div class="stock-indicator"><i class="fa-solid fa-box"></i> Stock: 120</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$25.00</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <input type="number" value="56" class="table-input" style="width: 60px;">
+                                <span class="profit-badge profit-med">Good</span>
+                            </div>
+                        </td>
+                        <td style="color: #2b6cb0; font-weight: 600;">+$14.00</td>
+                        <td>
+                            <input type="number" value="39.00" class="table-input">
+                            <span class="price-meta">Suggested: $39.99</span>
+                        </td>
+                        <td>
+                            <div class="action-icons">
+                                <i class="fa-solid fa-floppy-disk save-row-btn" title="Save this item" style="color: var(--primary-color);"></i>
+                                <i class="fa-solid fa-clock-rotate-left history-btn" title="Price History"></i>
+                            </div>
+                        </td>
+                    </tr>
+
+                    <tr>
+                        <td>
+                            <div class="product-info">
+                                <img src="https://images.unsplash.com/photo-1702471897393-47ec1ba1192b?w=100" alt="img">
+                                <div>
+                                    <span class="name">VR Headset Pro</span>
+                                    <span class="id"><span class="sku-text">VR-PRO</span></span>
+                                    <div class="stock-indicator"><i class="fa-solid fa-box"></i> Stock: 5</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td>$380.00</td>
+                        <td>
+                            <div style="display: flex; align-items: center;">
+                                <input type="number" value="5" class="table-input" style="width: 60px; color: #c53030;">
+                                <span class="profit-badge profit-low">Low</span>
+                            </div>
+                        </td>
+                        <td style="color: #c53030; font-weight: 600;">+$19.00</td>
+                        <td>
+                            <input type="number" value="399.00" class="table-input" style="border-color: #feb2b2;">
+                            <span class="price-meta" style="color:#e53e3e;">Rec: Increase to $450</span>
+                        </td>
+                        <td>
+                            <div class="action-icons">
+                                <i class="fa-solid fa-floppy-disk save-row-btn" title="Save this item" style="color: var(--primary-color);"></i>
+                                <i class="fa-solid fa-clock-rotate-left history-btn" title="Price History"></i>
+                            </div>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <span>Showing 1 to 3 of 42 products</span>
+                    <div class="pagination-controls">
+                        <button disabled><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="active">1</button>
+                        <button>2</button>
+                        <button>3</button>
+                        <button>...</button>
+                        <button><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<div class="modal-overlay" id="modal-overlay"></div>
+
+<div class="modal" id="history-modal" style="max-width: 600px;">
+    <div class="modal-header">
+        <h3>Price History: <span id="history-product-name" style="color: var(--primary-color);">Product Name</span></h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body" style="padding: 0;">
+        <table class="history-table">
+            <thead>
+            <tr>
+                <th>Date</th>
+                <th>User</th>
+                <th>Change</th>
+                <th>Old <i class="fa-solid fa-arrow-right change-arrow"></i> New</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td>2024-11-20 <br><small style="color: #aaa">09:30 AM</small></td>
+                <td><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" class="user-avatar-xs"> Admin</td>
+                <td><span class="status-badge status-completed">Price Increase</span></td>
+                <td>$219 <i class="fa-solid fa-arrow-right change-arrow"></i> <strong>$229</strong></td>
+            </tr>
+            <tr>
+                <td>2024-10-15 <br><small style="color: #aaa">14:15 PM</small></td>
+                <td><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" class="user-avatar-xs"> Admin</td>
+                <td><span class="status-badge status-pending">Margin Adj</span></td>
+                <td>50% <i class="fa-solid fa-arrow-right change-arrow"></i> <strong>52%</strong></td>
+            </tr>
+            <tr>
+                <td>2024-09-01 <br><small style="color: #aaa">10:00 AM</small></td>
+                <td>System</td>
+                <td><span class="status-badge status-shipped">Import Update</span></td>
+                <td>Cost: $145 <i class="fa-solid fa-arrow-right change-arrow"></i> <strong>$150</strong></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+    </div>
+</div>
+
+<div class="toast" id="success-toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span>Action completed successfully!</span>
+</div>
+
+<script src="assets/js/main.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const overlay = document.getElementById("modal-overlay");
+        const historyModal = document.getElementById("history-modal");
+        const successToast = document.getElementById("success-toast");
+
+        const saveAllBtn = document.getElementById("save-all-btn");
+        const exportBtn = document.getElementById("export-btn");
+        const saveRowBtns = document.querySelectorAll(".save-row-btn");
+        const historyBtns = document.querySelectorAll(".history-btn");
+        const pageBtns = document.querySelectorAll('.pagination-controls button');
+
+        // --- Helper: Modal ---
+        function openModal(modal) {
+            modal.classList.add("active");
+            overlay.classList.add("active");
+        }
+        function closeModal() {
+            document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
+            overlay.classList.remove('active');
+        }
+        overlay.addEventListener("click", closeModal);
+        document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => btn.addEventListener("click", closeModal));
+
+        // --- Helper: Toast ---
+        function showToast(message) {
+            if (!successToast) return;
+            const toastText = successToast.querySelector("span");
+            if(toastText) toastText.innerText = message;
+            successToast.classList.add("show");
+            setTimeout(() => {
+                successToast.classList.remove("show");
+            }, 3000);
+        }
+
+        // 1. History Button Logic (Fake dynamic data)
+        historyBtns.forEach(btn => {
+            btn.addEventListener("click", function() {
+                // Lấy tên sản phẩm từ dòng tương ứng để hiện lên Modal cho thật
+                const row = this.closest('tr');
+                const productName = row.querySelector('.name').innerText;
+                document.getElementById('history-product-name').innerText = productName;
+                openModal(historyModal);
+            });
+        });
+
+        // 2. Save All Logic (Fake)
+        if(saveAllBtn) {
+            saveAllBtn.addEventListener("click", () => {
+                showToast("All pricing changes saved successfully!");
+            });
+        }
+
+        // 3. Export Logic (Fake)
+        if(exportBtn) {
+            exportBtn.addEventListener("click", () => {
+                showToast("Exporting price_list_2024.xlsx ...");
+            });
+        }
+
+        // 4. Row Save Logic (Fake)
+        saveRowBtns.forEach(btn => {
+            btn.addEventListener("click", function() {
+                const row = this.closest('tr');
+                const productName = row.querySelector('.name').innerText;
+                showToast(`Updated price for: ${productName}`);
+            });
+        });
+
+        // 5. Pagination Active Logic (Fake)
+        pageBtns.forEach(btn => {
+            if (!btn.querySelector('i') && btn.innerText !== "...") {
+                btn.addEventListener('click', function() {
+                    pageBtns.forEach(b => {
+                        if(!b.querySelector('i')) b.classList.remove('active');
+                    });
+                    this.classList.add('active');
+                });
+            }
+        });
+    });
+</script>
+
+</body>
+</html>
