@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -83,6 +83,10 @@
             border-top: 1px solid var(--border-color);
             padding-top: 1rem;
         }
+
+        /* Animation cho spinner loading */
+        .fa-spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
@@ -181,9 +185,9 @@
                     <label>To Date</label>
                     <input type="date">
                 </div>
-                <a href="imports-search.html" class="btn btn-primary" style="align-self: flex-end; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
-                    Filter
-                </a>
+                <button class="btn btn-primary" onclick="fakeSearch()" style="align-self: flex-end; display: inline-flex; align-items: center; justify-content: center; height: 42px; border: none; cursor: pointer;">
+                    <i class="fas fa-search" style="margin-right: 8px;"></i> Filter
+                </button>
             </div>
 
             <div class="table-wrapper">
@@ -397,11 +401,23 @@
         const detailModal = document.getElementById("import-detail-modal");
         const deleteModal = document.getElementById("delete-modal");
         const successToast = document.getElementById("success-toast");
-
-        const viewBtns = document.querySelectorAll(".view-import-btn");
-        const deleteBtns = document.querySelectorAll(".delete-import-btn");
-        const printBtns = document.querySelectorAll(".print-btn");
         const confirmDeleteBtn = document.getElementById("confirm-delete-btn");
+
+        // --- GLOBAL FUNCTION FOR SEARCH ---
+        window.fakeSearch = function() {
+            const tbody = document.querySelector(".table-wrapper tbody");
+            const originalContent = tbody.innerHTML; // Lưu nội dung cũ
+
+            // Hiển thị Spinner (colspan 7 vì bảng có 7 cột)
+            tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 40px; color: #718096;"><i class="fa-solid fa-spinner fa-2x"></i><p style="margin-top:10px;">Searching...</p></td></tr>`;
+
+            setTimeout(() => {
+                // Trả lại nội dung cũ sau 1 giây
+                tbody.innerHTML = originalContent;
+                // QUAN TRỌNG: Gán lại sự kiện cho các nút trong bảng (vì innerHTML đã bị thay đổi)
+                attachTableEvents();
+            }, 1000);
+        }
 
         // --- HELPER FUNCTIONS ---
         function openModal(modal) {
@@ -426,29 +442,44 @@
             }, 3000);
         }
 
-        // --- EVENT LISTENERS ---
+        // --- EVENT HANDLERS FUNCTION (Call initially AND after search) ---
+        function attachTableEvents() {
+            const viewBtns = document.querySelectorAll(".view-import-btn");
+            const deleteBtns = document.querySelectorAll(".delete-import-btn");
+            const printBtns = document.querySelectorAll(".print-btn");
 
-        // Close on click overlay or x button
+            // View Detail Action
+            viewBtns.forEach(btn => {
+                btn.removeEventListener("click", viewDetailHandler); // prevent double binding
+                btn.addEventListener("click", viewDetailHandler);
+            });
+
+            // Delete Action
+            deleteBtns.forEach(btn => {
+                btn.removeEventListener("click", deleteHandler);
+                btn.addEventListener("click", deleteHandler);
+            });
+
+            // Print Action
+            printBtns.forEach(btn => {
+                btn.removeEventListener("click", printHandler);
+                btn.addEventListener("click", printHandler);
+            });
+        }
+
+        // Handler functions separate to allow re-binding
+        const viewDetailHandler = () => openModal(detailModal);
+        const deleteHandler = () => openModal(deleteModal);
+        const printHandler = () => showToast("Sending to printer...");
+
+        // --- INITIALIZATION ---
+        // 1. Close Modals
         document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => {
             btn.addEventListener("click", closeModal);
         });
         overlay.addEventListener("click", closeModal);
 
-        // View Detail Action
-        viewBtns.forEach(btn => {
-            btn.addEventListener("click", () => {
-                openModal(detailModal);
-            });
-        });
-
-        // Delete Action
-        deleteBtns.forEach(btn => {
-            btn.addEventListener("click", () => {
-                openModal(deleteModal);
-            });
-        });
-
-        // Confirm Delete
+        // 2. Confirm Delete
         if (confirmDeleteBtn) {
             confirmDeleteBtn.addEventListener("click", () => {
                 closeModal();
@@ -456,17 +487,10 @@
             });
         }
 
-        // Print Action
-        printBtns.forEach(btn => {
-            btn.addEventListener("click", () => {
-                showToast("Sending to printer...");
-            });
-        });
-
-        // --- PAGINATION UI FAKE ---
+        // 3. Pagination UI Fake
         const pageBtns = document.querySelectorAll('.pagination-controls button');
         pageBtns.forEach(btn => {
-            if (!btn.querySelector('i')) { // Chỉ bắt sự kiện nút số
+            if (!btn.querySelector('i')) {
                 btn.addEventListener('click', function() {
                     pageBtns.forEach(b => {
                         if(!b.querySelector('i')) b.classList.remove('active');
@@ -475,6 +499,9 @@
                 });
             }
         });
+
+        // 4. Attach events for the first time
+        attachTableEvents();
     });
 </script>
 </body>
