@@ -185,9 +185,10 @@
                     <label>To Date</label>
                     <input type="date">
                 </div>
-                <button class="btn btn-primary" onclick="fakeSearch()" style="align-self: flex-end; display: inline-flex; align-items: center; justify-content: center; height: 42px; border: none; cursor: pointer;">
+
+                <a href="imports-search.html" class="btn btn-primary" style="align-self: flex-end; display: inline-flex; align-items: center; justify-content: center; height: 42px; text-decoration: none;">
                     <i class="fas fa-search" style="margin-right: 8px;"></i> Filter
-                </button>
+                </a>
             </div>
 
             <div class="table-wrapper">
@@ -406,17 +407,14 @@
         // --- GLOBAL FUNCTION FOR SEARCH ---
         window.fakeSearch = function() {
             const tbody = document.querySelector(".table-wrapper tbody");
-            const originalContent = tbody.innerHTML; // Lưu nội dung cũ
 
-            // Hiển thị Spinner (colspan 7 vì bảng có 7 cột)
+            // 1. Hiển thị loading để tạo hiệu ứng xử lý
             tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding: 40px; color: #718096;"><i class="fa-solid fa-spinner fa-2x"></i><p style="margin-top:10px;">Searching...</p></td></tr>`;
 
+            // 2. Chuyển hướng sang trang kết quả tìm kiếm sau 500ms
             setTimeout(() => {
-                // Trả lại nội dung cũ sau 1 giây
-                tbody.innerHTML = originalContent;
-                // QUAN TRỌNG: Gán lại sự kiện cho các nút trong bảng (vì innerHTML đã bị thay đổi)
-                attachTableEvents();
-            }, 1000);
+                window.location.href = 'search-results.html';
+            }, 500);
         }
 
         // --- HELPER FUNCTIONS ---
@@ -442,7 +440,7 @@
             }, 3000);
         }
 
-        // --- EVENT HANDLERS FUNCTION (Call initially AND after search) ---
+        // --- EVENT HANDLERS FUNCTION ---
         function attachTableEvents() {
             const viewBtns = document.querySelectorAll(".view-import-btn");
             const deleteBtns = document.querySelectorAll(".delete-import-btn");
@@ -450,7 +448,7 @@
 
             // View Detail Action
             viewBtns.forEach(btn => {
-                btn.removeEventListener("click", viewDetailHandler); // prevent double binding
+                btn.removeEventListener("click", viewDetailHandler);
                 btn.addEventListener("click", viewDetailHandler);
             });
 
@@ -467,7 +465,7 @@
             });
         }
 
-        // Handler functions separate to allow re-binding
+        // Handler functions
         const viewDetailHandler = () => openModal(detailModal);
         const deleteHandler = () => openModal(deleteModal);
         const printHandler = () => showToast("Sending to printer...");
@@ -500,7 +498,7 @@
             }
         });
 
-        // 4. Attach events for the first time
+        // 4. Attach events
         attachTableEvents();
     });
 </script>

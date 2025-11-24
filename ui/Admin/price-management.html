@@ -388,22 +388,12 @@
 </div>
 
 <script src="assets/js/main.js"></script>
+<script src="assets/js/main.js"></script>
 <script>
     // --- JS LOGIC ---
     function fakeSearch(tabId) {
-        const tbody = document.querySelector(`#${tabId} tbody`);
-
-        // 1. Lưu lại nội dung bảng hiện tại trước khi hiển thị loading
-        const originalContent = tbody.innerHTML;
-
-        // 2. Hiển thị Loading (Spinner)
-        // Lưu ý: colspan=6 để đảm bảo spinner nằm giữa bảng
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color: #718096;"><i class="fa-solid fa-spinner fa-2x"></i><p style="margin-top:10px;">Searching...</p></td></tr>`;
-
-        // 3. Đợi 1 giây rồi trả lại nội dung cũ (Không thay đổi dữ liệu)
-        setTimeout(() => {
-            tbody.innerHTML = originalContent;
-        }, 1000);
+        // Chuyển hướng ngay lập tức sang trang kết quả
+        window.location.href = 'price-search-results.html';
     }
 
     // --- TAB AND MODAL LOGIC (GIỮ NGUYÊN) ---
@@ -425,20 +415,22 @@
         document.getElementById('modal-product-name').value = name;
         document.getElementById('modal-profit-rate').value = profit;
 
+        // Reset inputs
+        const costInput = document.getElementById('modal-cost-price');
+        costInput.value = cost || 0;
+
+        // Toggle cost/price fields based on context
         const costGroup = document.getElementById('group-cost');
         const priceGroup = document.getElementById('group-price');
-        const costInput = document.getElementById('modal-cost-price');
 
         if (cost === null) {
             costGroup.style.display = 'none';
             priceGroup.style.display = 'none';
             costInput.removeAttribute('required');
-            costInput.value = 0;
         } else {
             costGroup.style.display = 'block';
             priceGroup.style.display = 'block';
             costInput.setAttribute('required', 'true');
-            costInput.value = cost;
             calculateSellingPrice();
         }
 
@@ -464,6 +456,5 @@
         setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 </script>
-
 </body>
 </html>

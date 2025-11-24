@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Search Results</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/products.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* CSS reuse from price-management */
+        .data-table { width: 100%; border-collapse: separate; border-spacing: 0; background: white; border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 24px; }
+        .data-table th { background-color: #f7fafc; padding: 16px; text-align: left; font-size: 1.3rem; font-weight: 600; color: #4a5568; border-bottom: 1px solid #e2e8f0; text-transform: uppercase; }
+        .data-table td { padding: 16px; font-size: 1.4rem; border-bottom: 1px solid #edf2f7; vertical-align: middle; }
+
+        .action-btn-edit { width: 36px; height: 36px; background-color: #ebf8ff; color: #3182ce; border-radius: 6px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.4rem; transition: all 0.2s; }
+
+        /* Modal & Toast CSS */
+        .price-modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 9999; align-items: center; justify-content: center; }
+        .price-modal.active { display: flex; }
+        .price-modal-content { background-color: white; width: 90%; max-width: 500px; padding: 30px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); position: relative; }
+        .form-group-modal { margin-bottom: 16px; }
+        .form-group-modal label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 1.4rem; }
+        .form-group-modal input { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; }
+        .save-btn { width: 100%; padding: 12px; background-color: #3182ce; color: white; border: none; border-radius: 6px; font-size: 1.6rem; font-weight: 600; cursor: pointer; }
+        .close-btn { position: absolute; right: 20px; top: 20px; font-size: 2.4rem; cursor: pointer; color: #a0aec0; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+
+    <nav class="sidebar">
+        <div style="width: 100%; display:flex; justify-content: center" class="sidebar-header">
+            <img style="width: 150px;" src="../../ui/User/assets/images/2.png" alt="logo">
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html"><i class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html"><i class="fa-solid fa-box-archive"></i><span>Products</span></a></li>
+            <li class="nav-item"><a href="imports.html"><i class="fa-solid fa-file-import"></i><span>Imports</span></a></li>
+            <li class="nav-item"><a href="price-management.html" class="active"><i class="fa-solid fa-tags"></i><span>Price & Profit</span></a></li>
+            <li class="nav-item"><a href="inventory-report.html"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
+            <li class="nav-item"><a href="categories.html"><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a></li>
+            <li class="nav-item"><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a></li>
+            <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-users"></i><span>Customers</span></a></li>
+            <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-line"></i><span>Sales Reports</span></a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <ul class="nav-list"><li class="nav-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li></ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="app-header">
+            <form action="search-results.html" method="GET" class="header-search">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" name="query" placeholder="Search products, orders, customers...">
+            </form>
+
+            <div class="header-right">
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+                <div class="profile-menu" id="profile-menu-toggle">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Admin Avatar">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="page-header">
+                <div>
+                    <a href="price-management.html" style="text-decoration: none; color: #718096; font-size: 1.4rem; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px;">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Price Management
+                    </a>
+                    <h1>Search Results</h1>
+                    <p>Found 1 result for "iPhone"</p>
+                </div>
+            </div>
+
+            <div style="background: #fff; padding: 20px; border-radius: 8px; border: 1px solid #e2e8f0;">
+                <h3 style="margin-bottom: 15px; color: #2d3748;">Product Profit Analysis</h3>
+
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%;">No.</th>
+                        <th>PRODUCT</th>
+                        <th>CATEGORY</th>
+                        <th>PROFIT (%)</th>
+                        <th style="width: 15%; text-align: center;">ACTIONS</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>iPhone 15 Pro Max</td>
+                        <td>Smartphones</td>
+                        <td>20%</td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('iPhone 15 Pro Max', null, 20)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <span>Showing 1 to 1 of 1 result</span>
+                    <div class="pagination-controls">
+                        <button disabled><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="active">1</button>
+                        <button disabled><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+
+<div id="editPriceModal" class="price-modal">
+    <div class="price-modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-pen-to-square"></i> Update Information</h3>
+        <form id="editPriceForm" onsubmit="event.preventDefault(); saveChanges();">
+            <div class="form-group-modal">
+                <label>Item Name</label>
+                <input type="text" id="modal-product-name" disabled style="background-color: #f8f9fa; color: #4a5568;">
+            </div>
+            <div class="form-group-modal" id="group-cost" style="display:none;">
+                <label>Cost Price ($)</label>
+                <input type="number" id="modal-cost-price" min="0" step="0.01" oninput="calculateSellingPrice()">
+            </div>
+            <div class="form-group-modal">
+                <label>Profit Margin (%)</label>
+                <input type="number" id="modal-profit-rate" required min="0" max="100" step="0.1" oninput="calculateSellingPrice()" placeholder="Ex: 20">
+            </div>
+            <div class="form-group-modal" id="group-price" style="display:none;">
+                <label>Estimated Selling Price</label>
+                <input type="text" id="modal-selling-price" disabled value="$0.00">
+            </div>
+            <button type="submit" class="save-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
+        </form>
+    </div>
+</div>
+
+<div class="toast" id="success-toast">
+    <i class="fa-solid fa-check-circle"></i>
+    <span>Update successful!</span>
+</div>
+
+<script src="assets/js/main.js"></script>
+<script>
+    const modal = document.getElementById('editPriceModal');
+    const toast = document.getElementById('success-toast');
+
+    function openEditModal(name, cost, profit) {
+        document.getElementById('modal-product-name').value = name;
+        document.getElementById('modal-profit-rate').value = profit;
+        modal.classList.add('active');
+    }
+
+    function closeModal() { modal.classList.remove('active'); }
+    window.onclick = function(event) { if (event.target == modal) closeModal(); }
+
+    function saveChanges() {
+        closeModal();
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechStore - Inventory Search</title>
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="stylesheet" href="assets/css/dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* CSS Reuse from Inventory Report */
+        .filter-row-container { display: flex; gap: 20px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+        .filter-controls { display: flex; gap: 10px; align-items: center; }
+        .custom-input { padding: 10px 15px; border: 1px solid #e2e8f0; border-radius: 6px; outline: none; font-size: 1.4rem; }
+        .btn-search { background-color: #2f855a; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .product-img-small { width: 50px; height: 50px; object-fit: cover; border-radius: 6px; border: 1px solid #e2e8f0; }
+        .badge-custom { padding: 6px 12px; border-radius: 20px; font-size: 1.2rem; font-weight: 600; display: inline-flex; align-items: center; gap: 5px; }
+        .badge-stock { background-color: #c6f6d5; color: #22543d; }
+    </style>
+</head>
+<body>
+<div class="app-container">
+    <nav class="sidebar">
+        <div style="width: 100%; display:flex; justify-content: center" class="sidebar-header">
+            <img style="width: 150px;" src="../../ui/User/assets/images/2.png" alt="logo">
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item"><a href="index.html"><i class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html"><i class="fa-solid fa-box-archive"></i><span>Products</span></a></li>
+            <li class="nav-item"><a href="imports.html"><i class="fa-solid fa-file-import"></i><span>Imports</span></a></li>
+            <li class="nav-item"><a href="price-management.html"><i class="fa-solid fa-tags"></i><span>Price & Profit</span></a></li>
+            <li class="nav-item"><a href="inventory-report.html" class="active"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
+            <li class="nav-item"><a href="categories.html"><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a></li>
+            <li class="nav-item"><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a></li>
+            <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-users"></i><span>Customers</span></a></li>
+            <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-line"></i><span>Sales Reports</span></a></li>
+        </ul>
+        <div class="sidebar-footer">
+            <ul class="nav-list"><li class="nav-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li></ul>
+        </div>
+    </nav>
+
+    <main class="main-content">
+        <header class="app-header">
+            <form action="search-results.html" method="GET" class="header-search">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" name="query" placeholder="Search products, orders, customers...">
+            </form>
+            <div class="header-right">
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+                <div class="profile-menu" id="profile-menu-toggle">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Admin Avatar">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+            </div>
+        </header>
+
+        <div class="page-content">
+            <div class="page-header">
+                <div>
+                    <a href="inventory-report.html" style="text-decoration: none; color: #718096; font-size: 1.4rem; display: inline-flex; align-items: center; gap: 5px; margin-bottom: 10px;">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Inventory
+                    </a>
+                    <h1>Search Results</h1>
+                    <p>Found 1 result for "iPhone"</p>
+                </div>
+            </div>
+
+
+
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                    <tr>
+                        <th>SKU</th>
+                        <th>Image</th>
+                        <th>Product Name</th>
+                        <th>Quantity</th>
+                        <th>Unit</th>
+                        <th>Price ($)</th>
+                        <th>Last Import</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td><strong>TEC001</strong></td>
+                        <td><img src="https://images.unsplash.com/photo-1695048132832-b41495f12eb4?w=100" class="product-img-small" alt="img"></td>
+                        <td>iPhone 15 Pro Max</td>
+                        <td style="font-weight: 700; font-size: 1.5rem;">43</td>
+                        <td>Unit</td>
+                        <td>$1,199.00</td>
+                        <td>2025-10-21</td>
+                        <td><span class="badge-custom badge-stock"><i class="fa-solid fa-check-circle"></i> In Stock</span></td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="pagination">
+                    <span>Showing 1 to 1 of 1 result</span>
+                    <div class="pagination-controls">
+                        <button disabled><i class="fa-solid fa-chevron-left"></i></button>
+                        <button class="active">1</button>
+                        <button disabled><i class="fa-solid fa-chevron-right"></i></button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+</div>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

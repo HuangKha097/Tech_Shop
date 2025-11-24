@@ -243,6 +243,10 @@
                     <span class="detail-value" id="detailCustomerName"></span>
                 </div>
                 <div class="detail-item">
+                    <span class="detail-label">Phone</span>
+                    <span class="detail-value" id="detailCustomerPhone"></span>
+                </div>
+                <div class="detail-item" style="grid-column: span 2;">
                     <span class="detail-label">Email</span>
                     <span class="detail-value" id="detailCustomerEmail"></span>
                 </div>
@@ -288,12 +292,13 @@
 <script src="assets/js/main.js"></script>
 
 <script>
-    // 1. Dữ liệu đơn hàng (Đã xóa Son Tung và Mono)
+    // 1. Dữ liệu đơn hàng gốc
     let orders = [
         {
             code: 'ORD-2024-001',
             customer: 'Trinh Tran Phuong Tuan',
             email: 'j97@email.com',
+            phone: '0979 123 456',
             date: '2024-01-15',
             address: '123 Ben Tre City, Vietnam',
             products: [{ name: 'iPhone 15 Pro Max', quantity: 1, price: 1199 }],
@@ -304,6 +309,7 @@
             code: 'ORD-2024-002',
             customer: 'Thien An',
             email: 'snack@email.com',
+            phone: '0909 888 777',
             date: '2024-01-15',
             address: '456 District 1, HCMC',
             products: [{ name: 'MacBook Air M2', quantity: 1, price: 1099 }, { name: 'AirPods Pro 2', quantity: 1, price: 249 }],
@@ -314,6 +320,7 @@
             code: 'ORD-2024-007',
             customer: 'Nguyen Bao Khanh',
             email: 'kicm@email.com',
+            phone: '0912 345 678',
             date: '2024-01-12',
             address: '789 District 3, HCMC',
             products: [{ name: 'Samsung Galaxy S24 Ultra', quantity: 1, price: 1299 }],
@@ -382,38 +389,15 @@
         setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
-    function openModal() {
-        modal.classList.add("active");
-        overlay.classList.add("active");
-    }
+    function openModal() { modal.classList.add("active"); overlay.classList.add("active"); }
+    function closeModal() { modal.classList.remove("active"); overlay.classList.remove("active"); }
 
-    function closeModal() {
-        modal.classList.remove("active");
-        overlay.classList.remove("active");
-    }
-
-    // 2. HÀM LẤY ẢNH SẢN PHẨM CHÍNH XÁC
     function getProductImage(name) {
         const lowerName = name.toLowerCase();
-
-        // Samsung (Ảnh bạn cung cấp)
-        if (lowerName.includes('samsung')) {
-            return "https://images.unsplash.com/photo-1705585174953-9b2aa8afc174?q=80&w=732&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-        }
-        // Airpods (Ảnh bạn cung cấp)
-        if (lowerName.includes('airpod')) {
-            return "https://images.unsplash.com/photo-1593442607435-e4e34991b210?q=80&w=885&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-        }
-        // iPhone 15 (Ảnh bạn cung cấp)
-        if (lowerName.includes('iphone')) {
-            return "https://images.unsplash.com/photo-1695048132832-b41495f12eb4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-        }
-        // Macbook (Dùng ảnh cũ hoặc mặc định)
-        if (lowerName.includes('macbook')) {
-            return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1026&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
-        }
-
-        // Mặc định cho sản phẩm khác
+        if (lowerName.includes('samsung')) return "https://images.unsplash.com/photo-1705585174953-9b2aa8afc174?q=80&w=732&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+        if (lowerName.includes('airpod')) return "https://images.unsplash.com/photo-1593442607435-e4e34991b210?q=80&w=885&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+        if (lowerName.includes('iphone')) return "https://images.unsplash.com/photo-1695048132832-b41495f12eb4?q=80&w=1170&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
+        if (lowerName.includes('macbook')) return "https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1026&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
         return "https://images.unsplash.com/photo-1571251455684-2eb131fdb294?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=1170";
     }
 
@@ -423,9 +407,9 @@
         document.getElementById('detailOrderDate').textContent = order.date;
         document.getElementById('detailStatus').innerHTML = `<span class="status-badge" style="background:#edf2f7; color:${getStatusColor(order.status)}; padding: 3px 8px; border-radius:4px;">${order.status}</span>`;
         document.getElementById('detailTotalAmount').textContent = formatCurrency(order.total);
-
         document.getElementById('detailCustomerName').textContent = order.customer;
         document.getElementById('detailCustomerEmail').textContent = order.email;
+        document.getElementById('detailCustomerPhone').textContent = order.phone || 'N/A';
         document.getElementById('detailCustomerAddress').textContent = order.address;
 
         const detailBody = document.getElementById('detailProductBody');
@@ -452,9 +436,6 @@
                 orders[index].status = e.target.value;
                 e.target.style.color = getStatusColor(e.target.value);
                 showToastMsg(`Updated order ${orders[index].code} successfully!`);
-                if(e.target.value === 'Completed' || e.target.value === 'Cancelled') {
-                    renderTable(orders);
-                }
             }
         });
 
@@ -476,31 +457,13 @@
             showToastMsg('Printing invoice...');
         });
 
-        document.getElementById('reloadButton').addEventListener('click', () => {
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px; color: #718096;"><i class="fa-solid fa-spinner fa-spin fa-2x"></i><br>Loading data...</td></tr>';
-            setTimeout(() => {
-                renderTable(orders);
-                showToastMsg('Data reloaded!');
-            }, 800);
+        // --- CHUYỂN TRANG NGAY LẬP TỨC (KHÔNG LOADING) ---
+        document.getElementById('searchButton').addEventListener('click', () => {
+            window.location.href = 'orders-search-results.html';
         });
 
-        // CHỨC NĂNG TÌM KIẾM CÓ HIỆU ỨNG LOAD
-        document.getElementById('searchButton').addEventListener('click', () => {
-            const term = document.getElementById('searchOrder').value.toLowerCase();
-
-            // Hiển thị trạng thái đang tìm kiếm
-            tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px; color: #718096;"><i class="fa-solid fa-spinner fa-spin fa-2x"></i><br>Searching...</td></tr>';
-
-            setTimeout(() => {
-                const filtered = orders.filter(o =>
-                    o.code.toLowerCase().includes(term) ||
-                    o.customer.toLowerCase().includes(term)
-                );
-                renderTable(filtered);
-                if(filtered.length === 0) {
-                    tbody.innerHTML = '<tr><td colspan="8" style="text-align:center; padding:20px;">No results found</td></tr>';
-                }
-            }, 600); // Đợi 600ms giả lập
+        document.getElementById('reloadButton').addEventListener('click', () => {
+            window.location.reload();
         });
     });
 </script>
