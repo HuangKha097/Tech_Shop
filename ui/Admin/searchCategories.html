@@ -7,6 +7,23 @@
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/categories.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+    <style>
+        /* Fix style dropdown profile nếu cần */
+        .header-right { position: relative; }
+        .profile-dropdown {
+            position: absolute; top: 120%; right: 0;
+            background-color: white; border: 1px solid #e2e8f0;
+            border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 200px; z-index: 1000;
+            opacity: 0; visibility: hidden; transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        .profile-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-header { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; }
+        .dropdown-list { list-style: none; padding: 8px 0; margin: 0; }
+        .dropdown-item a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 1.4rem; color: #4a5568; text-decoration: none; }
+        .dropdown-item a:hover { background-color: #f7fafc; color: #3182ce; }
+    </style>
 </head>
 <body>
 <div class="app-container">
@@ -117,7 +134,7 @@
 
 <div class="modal" id="form-modal">
     <div class="modal-header">
-        <h3 id="modal-title">Add New Category</h3>
+        <h3 id="modal-title">Edit Category</h3>
         <button class="modal-close" data-dismiss="modal">&times;</button>
     </div>
     <div class="modal-body">
@@ -128,8 +145,7 @@
         <div class="form-group">
             <div class="filter-group" style=" margin-bottom: 10px;flex: 1;">
                 <label for="status" style="color: #0d0d0d; margin-bottom: -5px">Status</label>
-                <select   class="filter-status" name="status">
-                    <option value="all">All Status</option>
+                <select class="filter-status" name="status" id="modal-item-status">
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                 </select>
@@ -162,5 +178,110 @@
 </div>
 
 <script src="assets/js/main.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // --- LOGIC PROFILE DROPDOWN ---
+        const profileMenu = document.getElementById("profile-menu-toggle");
+        const profileDropdown = document.getElementById("profile-dropdown");
+
+        if (profileMenu && profileDropdown) {
+            profileMenu.addEventListener("click", (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle("active");
+            });
+            document.addEventListener("click", (e) => {
+                if (profileDropdown.classList.contains("active") && !profileMenu.contains(e.target)) {
+                    profileDropdown.classList.remove("active");
+                }
+            });
+        }
+
+        // --- LOGIC MODAL & EDIT ---
+        const formModal = document.getElementById("form-modal");
+        const deleteModal = document.getElementById("delete-modal");
+        const overlay = document.getElementById("modal-overlay");
+        const toast = document.getElementById("success-toast");
+
+        // Form elements
+        const modalTitle = document.getElementById("modal-title");
+        const nameInput = document.getElementById("item-name");
+        const descInput = document.getElementById("item-description");
+        const statusSelect = document.getElementById("modal-item-status");
+
+        const editBtns = document.querySelectorAll(".fa-pen");
+        const deleteBtns = document.querySelectorAll(".fa-trash-can");
+        const closeBtns = document.querySelectorAll(".modal-close, .btn-secondary");
+        const saveBtn = document.getElementById("modal-save-btn");
+        const deleteConfirmBtn = document.getElementById("modal-delete-btn");
+
+        function openModal(modal) {
+            modal.classList.add("active");
+            overlay.classList.add("active");
+        }
+
+        function closeModal() {
+            document.querySelectorAll(".modal").forEach(m => m.classList.remove("active"));
+            overlay.classList.remove("active");
+        }
+
+        function showToast(msg) {
+            const span = toast.querySelector("span");
+            if(span) span.innerText = msg;
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        }
+
+        // 1. XỬ LÝ NÚT SỬA (FILL INFO TỪ CARD VÀO MODAL)
+        editBtns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                modalTitle.innerText = "Edit Category";
+
+                // Tìm Card cha
+                const card = e.target.closest(".category-card");
+
+                if(card) {
+                    // Lấy thông tin
+                    const name = card.querySelector("h3").innerText;
+                    const desc = card.querySelector(".category-card-content p").innerText;
+                    const status = card.querySelector(".status-badge").innerText.toLowerCase();
+
+                    // Điền vào form
+                    nameInput.value = name;
+                    descInput.value = desc;
+                    if(statusSelect) {
+                        statusSelect.value = status.includes("active") ? "active" : "inactive";
+                    }
+                }
+                openModal(formModal);
+            });
+        });
+
+        // 2. XỬ LÝ NÚT XÓA
+        deleteBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                openModal(deleteModal);
+            });
+        });
+
+        // 3. CÁC NÚT ĐÓNG / LƯU
+        closeBtns.forEach(btn => btn.addEventListener("click", closeModal));
+        overlay.addEventListener("click", closeModal);
+
+        if(saveBtn) {
+            saveBtn.addEventListener("click", () => {
+                closeModal();
+                showToast("Changes saved successfully!");
+            });
+        }
+
+        if(deleteConfirmBtn) {
+            deleteConfirmBtn.addEventListener("click", () => {
+                closeModal();
+                showToast("Item deleted successfully!");
+            });
+        }
+    });
+</script>
 </body>
 </html>

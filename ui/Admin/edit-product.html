@@ -16,10 +16,10 @@
         </div>
         <ul class="nav-list">
             <li class="nav-item"><a href="index.html"><i class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a></li>
-            <li class="nav-item"><a href="products.html"><i class="fa-solid fa-box-archive"></i><span>Products</span></a></li>
+            <li class="nav-item"><a href="products.html"  class="active"><i class="fa-solid fa-box-archive"></i><span>Products</span></a></li>
             <li class="nav-item"><a href="imports.html"><i class="fa-solid fa-file-import"></i><span>Imports</span></a></li>
             <li class="nav-item"><a href="price-management.html"><i class="fa-solid fa-tags"></i><span>Price & Profit</span></a></li>
-            <li class="nav-item"><a href="inventory-report.html" class="active"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
+            <li class="nav-item"><a href="inventory-report.html"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
             <li class="nav-item"><a href="categories.html"><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a></li>
 
             <li class="nav-item"><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a></li>
@@ -38,12 +38,12 @@
                 <i class="fa-solid fa-search"></i>
                 <input type="text" name="query" placeholder="Search products, orders, customers...">
             </form>
+
             <div class="header-right">
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
 
                 <div class="profile-menu" id="profile-menu-toggle">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s"
-                         alt="Admin Avatar">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Admin Avatar">
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
 
@@ -61,7 +61,6 @@
                 </div>
             </div>
         </header>
-
         <div class="page-content">
             <div class="page-header">
                 <div>
@@ -105,17 +104,10 @@
                                 <option value="active" selected>Active</option>
                                 <option value="inactive">Inactive</option>
                                 <option value="low-stock">Low Stock</option>
+                                <option value="out_of_stock">Out of Stock</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="product-price">Price ($)</label>
-                            <input type="text" id="product-price" value="229">
-                        </div>
 
-                        <div class="form-group">
-                            <label for="product-stock">Stock Quantity</label>
-                            <input type="number" id="product-stock" value="45">
-                        </div>
 
                         <div class="form-group">
                             <label>Product Image</label>

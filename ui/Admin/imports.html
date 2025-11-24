@@ -110,13 +110,31 @@
 
     <main class="main-content">
         <header class="app-header">
-            <div class="header-search">
+            <form action="search-results.html" method="GET" class="header-search">
                 <i class="fa-solid fa-search"></i>
-                <input type="text" placeholder="Search imports by ID, Supplier...">
-            </div>
+                <input type="text" name="query" placeholder="Search products, orders, customers...">
+            </form>
+
             <div class="header-right">
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
-                <div class="profile-menu"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Avatar"></div>
+
+                <div class="profile-menu" id="profile-menu-toggle">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Admin Avatar">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="dropdown-header">
+                        <span>Admin</span>
+                        <small>admin@tech.com</small>
+                    </div>
+                    <ul class="dropdown-list">
+                        <li class="dropdown-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Setting</span></a></li>
+                    </ul>
+                    <div class="dropdown-footer">
+                        <li class="dropdown-item"><a href="./login.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a></li>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -163,7 +181,9 @@
                     <label>To Date</label>
                     <input type="date">
                 </div>
-                <button class="btn btn-primary" style="align-self: flex-end;">Filter</button>
+                <a href="imports-search.html" class="btn btn-primary" style="align-self: flex-end; text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">
+                    Filter
+                </a>
             </div>
 
             <div class="table-wrapper">
@@ -214,7 +234,7 @@
                         <td>
                             <div class="action-icons">
                                 <i class="fa-solid fa-eye view-import-btn" title="View Details"></i>
-                                <a href="add-import.html"><i class="fa-solid fa-pen" title="Edit"></i></a>
+                                <a href="import-edit.html"><i class="fa-solid fa-pen" title="Edit"></i></a>
                                 <i class="fa-solid fa-trash-can delete-import-btn" title="Delete"></i>
                             </div>
                         </td>

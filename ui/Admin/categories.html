@@ -4,9 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechStore - Categories</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/categories.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <style>
+        /* Fix font đồng bộ */
+        body { font-family: 'Inter', sans-serif; }
+        h1, h2, h3, h4, button { font-family: 'Poppins', sans-serif; }
+
+        /* CSS Profile Dropdown (Đảm bảo hiện menu) */
+        .header-right { position: relative; }
+        .profile-dropdown {
+            position: absolute; top: 120%; right: 0;
+            background-color: white; border: 1px solid #e2e8f0;
+            border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            width: 200px; z-index: 1000;
+            opacity: 0; visibility: hidden; transform: translateY(10px);
+            transition: all 0.3s ease;
+        }
+        .profile-dropdown.active { opacity: 1; visibility: visible; transform: translateY(0); }
+        .dropdown-header { padding: 12px 16px; border-bottom: 1px solid #e2e8f0; }
+        .dropdown-header span { display: block; font-weight: 600; font-size: 1.4rem; color: #2d3748; }
+        .dropdown-header small { font-size: 1.2rem; color: #718096; }
+        .dropdown-list { list-style: none; padding: 8px 0; margin: 0; }
+        .dropdown-item a { display: flex; align-items: center; gap: 10px; padding: 10px 16px; font-size: 1.4rem; color: #4a5568; text-decoration: none; transition: background 0.2s; }
+        .dropdown-item a:hover { background-color: #f7fafc; color: #3182ce; }
+        .dropdown-footer { border-top: 1px solid #e2e8f0; padding-top: 4px; }
+    </style>
 </head>
 <body>
 <div class="app-container">
@@ -15,34 +44,20 @@
             <img style="width: 200px;" src="../../ui/User/assets/images/2.png" alt="logo">
         </div>
         <ul class="nav-list">
-            <li class="nav-item"><a href="index.html"><i
-                    class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a></li>
-            <li class="nav-item"><a href="products.html"><i
-                    class="fa-solid fa-box-archive"></i><span>Products</span></a></li>
-            <li class="nav-item"><a href="imports.html"><i class="fa-solid fa-file-import"></i><span>Imports</span></a>
-            </li>
-            <li class="nav-item"><a href="price-management.html"><i
-                    class="fa-solid fa-tags"></i><span>Price & Profit</span></a></li>
-            <li class="nav-item"><a href="inventory-report.html"><i
-                    class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
-            <li class="nav-item"><a href="categories.html" class="active"><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a>
-            </li>
-
-            <li class="nav-item"><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a>
-            </li>
-            <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-users"></i><span>Customers</span></a>
-            </li>
-            <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-line"></i><span>Sales Reports</span></a>
-            </li>
+            <li class="nav-item"><a href="index.html"><i class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a></li>
+            <li class="nav-item"><a href="products.html"><i class="fa-solid fa-box-archive"></i><span>Products</span></a></li>
+            <li class="nav-item"><a href="imports.html"><i class="fa-solid fa-file-import"></i><span>Imports</span></a></li>
+            <li class="nav-item"><a href="price-management.html"><i class="fa-solid fa-tags"></i><span>Price & Profit</span></a></li>
+            <li class="nav-item"><a href="inventory-report.html"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
+            <li class="nav-item"><a href="categories.html" class="active"><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a></li>
+            <li class="nav-item"><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a></li>
+            <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-users"></i><span>Customers</span></a></li>
+            <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-line"></i><span>Sales Reports</span></a></li>
         </ul>
         <div class="sidebar-footer">
-            <ul class="nav-list">
-                <li class="nav-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a>
-                </li>
-            </ul>
+            <ul class="nav-list"><li class="nav-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li></ul>
         </div>
     </nav>
-
 
     <main class="main-content">
         <header class="app-header">
@@ -50,26 +65,27 @@
                 <i class="fa-solid fa-search"></i>
                 <input type="text" name="query" placeholder="Search products, orders, customers...">
             </form>
+
             <div class="header-right">
                 <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
-                <div class="profile-menu" id="profile-menu-toggle">
-                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s"
-                         alt="Admin Avatar">
+
+                <div class="profile-menu" id="profile-menu-toggle" style="cursor: pointer;">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Admin Avatar">
                     <i class="fa-solid fa-chevron-down"></i>
                 </div>
+
                 <div class="profile-dropdown" id="profile-dropdown">
                     <div class="dropdown-header">
                         <span>Admin</span>
                         <small>admin@tech.com</small>
                     </div>
                     <ul class="dropdown-list">
-                        <li class="dropdown-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Setting</span></a>
-                        </li>
+                        <li class="dropdown-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
                     </ul>
                     <div class="dropdown-footer">
-                        <li class="dropdown-item"><a href="./login.html"><i
-                                class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a>
-                        </li>
+                        <ul class="dropdown-list">
+                            <li class="dropdown-item"><a href="./login.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a></li>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -104,7 +120,6 @@
             </form>
 
             <div class="categories-grid">
-                <!-- Smartphones -->
                 <div class="category-card">
                     <div class="category-card-header">
                         <h3>Smartphones</h3>
@@ -122,7 +137,6 @@
                     </div>
                 </div>
 
-                <!-- Laptops -->
                 <div class="category-card">
                     <div class="category-card-header">
                         <h3>Laptops</h3>
@@ -140,7 +154,6 @@
                     </div>
                 </div>
 
-                <!-- Accessories -->
                 <div class="category-card">
                     <div class="category-card-header">
                         <h3>Accessories</h3>
@@ -158,7 +171,6 @@
                     </div>
                 </div>
 
-                <!-- Smart Home -->
                 <div class="category-card">
                     <div class="category-card-header">
                         <h3>Smart Home</h3>
@@ -176,7 +188,6 @@
                     </div>
                 </div>
 
-                <!-- Others -->
                 <div class="category-card">
                     <div class="category-card-header">
                         <h3>Others</h3>
@@ -214,8 +225,7 @@
         <div class="form-group">
             <div class="filter-group" style=" margin-bottom: 10px;flex: 1;">
                 <label for="status" style="color: #0d0d0d; margin-bottom: -5px">Status</label>
-                <select class="filter-status" name="status">
-                    <option value="all">All Status</option>
+                <select class="filter-status" name="status" id="modal-item-status">
                     <option value="active">Active</option>
                     <option value="inactive">Inactive</option>
                 </select>
@@ -248,5 +258,126 @@
 </div>
 
 <script src="assets/js/main.js"></script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        // --- 1. LOGIC PROFILE DROPDOWN ---
+        const profileMenu = document.getElementById("profile-menu-toggle");
+        const profileDropdown = document.getElementById("profile-dropdown");
+
+        if (profileMenu && profileDropdown) {
+            profileMenu.addEventListener("click", (e) => {
+                e.stopPropagation();
+                profileDropdown.classList.toggle("active");
+            });
+
+            document.addEventListener("click", (e) => {
+                if (profileDropdown.classList.contains("active") &&
+                    !profileMenu.contains(e.target) &&
+                    !profileDropdown.contains(e.target)
+                ) {
+                    profileDropdown.classList.remove("active");
+                }
+            });
+        }
+
+        // --- 2. LOGIC MODAL ADD vs EDIT ---
+        const formModal = document.getElementById("form-modal");
+        const deleteModal = document.getElementById("delete-modal");
+        const overlay = document.getElementById("modal-overlay");
+
+        const modalTitle = document.getElementById("modal-title");
+        const nameInput = document.getElementById("item-name");
+        const descInput = document.getElementById("item-description");
+        const statusSelect = document.getElementById("modal-item-status");
+
+        const addBtn = document.getElementById("add-category-btn");
+        const editBtns = document.querySelectorAll(".fa-pen"); // Nút bút chì
+        const deleteBtns = document.querySelectorAll(".fa-trash-can"); // Nút thùng rác
+        const closeBtns = document.querySelectorAll(".modal-close, .btn-secondary, #modal-overlay");
+        const saveBtn = document.getElementById("modal-save-btn");
+        const confirmDeleteBtn = document.getElementById("modal-delete-btn");
+        const toast = document.getElementById("success-toast");
+
+        function openModal(modal) {
+            modal.classList.add("active");
+            overlay.classList.add("active");
+        }
+
+        function closeModal() {
+            document.querySelectorAll(".modal").forEach(m => m.classList.remove("active"));
+            overlay.classList.remove("active");
+        }
+
+        function showToast(msg) {
+            const span = toast.querySelector("span");
+            if(span) span.innerText = msg;
+            toast.classList.add("show");
+            setTimeout(() => toast.classList.remove("show"), 3000);
+        }
+
+        // Xử lý nút Add -> Reset form
+        if (addBtn) {
+            addBtn.addEventListener("click", () => {
+                modalTitle.innerText = "Add New Category";
+                nameInput.value = "";
+                descInput.value = "";
+                if(statusSelect) statusSelect.value = "active";
+                openModal(formModal);
+            });
+        }
+
+        // Xử lý nút Edit -> Fill thông tin giả từ Card
+        editBtns.forEach(btn => {
+            btn.addEventListener("click", (e) => {
+                modalTitle.innerText = "Edit Category";
+
+                // Tìm Card chứa nút vừa bấm
+                const card = e.target.closest(".category-card");
+                if (card) {
+                    const name = card.querySelector("h3").innerText;
+                    const desc = card.querySelector(".category-card-content p").innerText;
+                    const statusText = card.querySelector(".status-badge").innerText.toLowerCase();
+
+                    // Điền dữ liệu
+                    nameInput.value = name;
+                    descInput.value = desc;
+                    if(statusSelect) {
+                        statusSelect.value = statusText.includes("active") ? "active" : "inactive";
+                    }
+                }
+                openModal(formModal);
+            });
+        });
+
+        // Xử lý nút Delete
+        deleteBtns.forEach(btn => {
+            btn.addEventListener("click", () => {
+                openModal(deleteModal);
+            });
+        });
+
+        // Xử lý các nút đóng modal
+        closeBtns.forEach(btn => {
+            btn.addEventListener("click", closeModal);
+        });
+
+        // Xử lý nút Save (Giả lập)
+        if(saveBtn) {
+            saveBtn.addEventListener("click", () => {
+                closeModal();
+                showToast("Category saved successfully!");
+            });
+        }
+
+        // Xử lý nút Confirm Delete (Giả lập)
+        if(confirmDeleteBtn) {
+            confirmDeleteBtn.addEventListener("click", () => {
+                closeModal();
+                showToast("Category deleted successfully!");
+            });
+        }
+    });
+</script>
 </body>
 </html>

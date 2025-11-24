@@ -3,97 +3,96 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Price Management</title>
+    <title>TechStore - Quản lý giá bán</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="assets/css/style.css">
     <link rel="stylesheet" href="assets/css/products.css">
-    <link rel="stylesheet" href="assets/css/forms.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
     <style>
-        /* CSS riêng cho trang Price Management Pro */
-        .table-input {
-            width: 90px;
-            padding: 0.8rem;
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            text-align: right;
-            font-weight: 600;
-            color: var(--text-primary);
-            transition: border-color 0.3s;
+        /* --- CSS GIỮ NGUYÊN --- */
+
+        .tabs { display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; }
+
+        .tab-button {
+            padding: 12px 20px; background: none; border: none; border-bottom: 3px solid transparent;
+            font-size: 1.5rem; font-weight: 500; color: #718096; cursor: pointer; transition: all 0.3s;
+            font-family: 'Poppins', sans-serif;
         }
-        .table-input:focus {
-            border-color: var(--primary-color);
-            outline: none;
+        .tab-button:hover { color: var(--primary-color, #3182ce); }
+        .tab-button.active {
+            color: var(--primary-color, #3182ce); border-bottom-color: var(--primary-color, #3182ce);
+            background-color: #ebf8ff; border-radius: 6px 6px 0 0;
         }
 
-        .price-meta {
-            font-size: 1.1rem;
-            color: var(--text-secondary);
-            margin-top: 4px;
-            display: block;
+        .tab-content { display: none; animation: fadeIn 0.3s ease; }
+        .tab-content.active { display: block; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        .filter-section {
+            display: flex; flex-wrap: wrap; gap: 16px; background: #fff; padding: 20px;
+            border-radius: 8px; border: 1px solid #e2e8f0; margin-bottom: 24px; align-items: flex-end;
         }
 
-        .profit-badge {
-            font-size: 1.1rem;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: 600;
-            margin-left: 5px;
-        }
-        .profit-high { background-color: #c6f6d5; color: #22543d; } /* Xanh lá */
-        .profit-med { background-color: #bee3f8; color: #2a4365; }  /* Xanh dương */
-        .profit-low { background-color: #feebc8; color: #744210; }  /* Cam */
-
-        .sku-text {
-            font-family: monospace;
-            background: #edf2f7;
-            padding: 2px 4px;
-            border-radius: 3px;
-            font-size: 1.1rem;
-            color: #4a5568;
+        .filter-group-custom { display: flex; flex-direction: column; gap: 8px; flex: 1; min-width: 180px; }
+        .filter-group-custom label { font-size: 1.3rem; font-weight: 600; color: #4a5568; }
+        .filter-group-custom input, .filter-group-custom select {
+            padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; font-size: 1.4rem; width: 100%;
         }
 
-        .stock-indicator {
-            font-size: 1.2rem;
-            color: var(--text-secondary);
+        .search-btn {
+            height: 42px; padding: 0 20px; font-size: 1.4rem; border-radius: 6px; border: none;
+            background-color: #3182ce; color: white; cursor: pointer; font-weight: 500;
+            display: inline-flex; align-items: center; gap: 8px; justify-content: center;
         }
-        .stock-indicator i {
-            font-size: 1rem;
-            margin-right: 4px;
-        }
+        .search-btn:hover { background-color: #2b6cb0; }
 
-        /* Style cho bảng lịch sử trong Modal */
-        .history-table {
-            width: 100%;
-            border-collapse: collapse;
-            font-size: 1.3rem;
+        .data-table {
+            width: 100%; border-collapse: separate; border-spacing: 0; background: white;
+            border-radius: 8px; border: 1px solid #e2e8f0; overflow: hidden; margin-bottom: 24px;
         }
-        .history-table th {
-            text-align: left;
-            padding: 1rem;
-            background-color: #f7fafc;
-            border-bottom: 1px solid var(--border-color);
-            color: var(--text-secondary);
+        .data-table th {
+            background-color: #f7fafc; padding: 16px; text-align: left; font-size: 1.3rem;
+            font-weight: 600; color: #4a5568; border-bottom: 1px solid #e2e8f0; text-transform: uppercase;
         }
-        .history-table td {
-            padding: 1rem;
-            border-bottom: 1px solid var(--border-color);
+        .data-table td { padding: 16px; font-size: 1.4rem; border-bottom: 1px solid #edf2f7; vertical-align: middle; }
+
+        .price-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.5); z-index: 9999; align-items: center; justify-content: center;
         }
-        .change-arrow {
-            color: var(--text-secondary);
-            margin: 0 5px;
-            font-size: 1rem;
+        .price-modal.active { display: flex; }
+        .price-modal-content {
+            background-color: white; width: 90%; max-width: 500px; padding: 30px;
+            border-radius: 12px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2); position: relative;
         }
-        .user-avatar-xs {
-            width: 20px;
-            height: 20px;
-            border-radius: 50%;
-            vertical-align: middle;
-            margin-right: 5px;
+        .form-group-modal { margin-bottom: 16px; }
+        .form-group-modal label { display: block; margin-bottom: 8px; font-weight: 600; font-size: 1.4rem; }
+        .form-group-modal input { width: 100%; padding: 10px; border: 1px solid #e2e8f0; border-radius: 6px; }
+
+        .action-btn-edit {
+            width: 36px; height: 36px; background-color: #ebf8ff; color: #3182ce;
+            border-radius: 6px; display: inline-flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.4rem; transition: all 0.2s;
         }
+        .save-btn {
+            width: 100%; padding: 12px; background-color: #3182ce; color: white;
+            border: none; border-radius: 6px; font-size: 1.6rem; font-weight: 600; cursor: pointer;
+        }
+        .close-btn { position: absolute; right: 20px; top: 20px; font-size: 2.4rem; cursor: pointer; color: #a0aec0; }
+
+        .fa-spinner { animation: spin 1s linear infinite; }
+        @keyframes spin { 100% { transform: rotate(360deg); } }
     </style>
 </head>
 <body>
 <div class="app-container">
+
     <nav class="sidebar">
         <div class="sidebar-header">
             <img style="width: 200px;" src="../../ui/User/assets/images/2.png" alt="logo">
@@ -104,8 +103,7 @@
             <li class="nav-item"><a href="imports.html"><i class="fa-solid fa-file-import"></i><span>Imports</span></a></li>
             <li class="nav-item"><a href="price-management.html" class="active"><i class="fa-solid fa-tags"></i><span>Price & Profit</span></a></li>
             <li class="nav-item"><a href="inventory-report.html"><i class="fa-solid fa-warehouse"></i><span>Inventory</span></a></li>
-            <li class="nav-item"><a href="categories.html" ><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a></li>
-
+            <li class="nav-item"><a href="categories.html"><i class="fa-solid fa-folder-tree"></i><span>Categories</span></a></li>
             <li class="nav-item"><a href="orders.html"><i class="fa-solid fa-cart-shopping"></i><span>Orders</span></a></li>
             <li class="nav-item"><a href="customers.html"><i class="fa-solid fa-users"></i><span>Customers</span></a></li>
             <li class="nav-item"><a href="reports.html"><i class="fa-solid fa-chart-line"></i><span>Sales Reports</span></a></li>
@@ -117,303 +115,384 @@
 
     <main class="main-content">
         <header class="app-header">
-            <div class="header-search"><i class="fa-solid fa-search"></i><input type="text" placeholder="Search product by name, SKU..."></div>
-            <div class="header-right"><div class="profile-menu"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Avatar"></div></div>
+            <form action="search-results.html" method="GET" class="header-search">
+                <i class="fa-solid fa-search"></i>
+                <input type="text" name="query" placeholder="Search products, orders, customers...">
+            </form>
+
+            <div class="header-right">
+                <button class="icon-btn"><i class="fa-regular fa-bell"></i></button>
+
+                <div class="profile-menu" id="profile-menu-toggle">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" alt="Admin Avatar">
+                    <i class="fa-solid fa-chevron-down"></i>
+                </div>
+
+                <div class="profile-dropdown" id="profile-dropdown">
+                    <div class="dropdown-header">
+                        <span>Admin</span>
+                        <small>admin@tech.com</small>
+                    </div>
+                    <ul class="dropdown-list">
+                        <li class="dropdown-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Setting</span></a></li>
+                    </ul>
+                    <div class="dropdown-footer">
+                        <li class="dropdown-item"><a href="./login.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a></li>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <div class="page-content">
             <div class="page-header">
                 <div>
-                    <h1>Price & Profit Management</h1>
-                    <p>Adjust pricing strategies and monitor profit margins.</p>
-                </div>
-                <div style="display: flex; gap: 10px;">
-                    <button class="btn btn-secondary" id="export-btn"><i class="fa-solid fa-file-excel"></i> Export Excel</button>
-                    <button class="btn btn-primary" id="save-all-btn"><i class="fa-solid fa-save"></i> Save All Changes</button>
+                    <h1>Quản lý giá bán</h1>
+                    <p>Điều chỉnh chiến lược giá và theo dõi lợi nhuận</p>
                 </div>
             </div>
 
-            <div class="filters-bar">
-                <div class="filter-group" style="flex: 1.5;">
-                    <label>Category</label>
-                    <select>
-                        <option>All Categories</option>
-                        <option>Smartphones</option>
-                        <option>Accessories</option>
-                    </select>
-                </div>
-                <div class="filter-group" style="flex: 1.5;">
-                    <label>Margin Status</label>
-                    <select>
-                        <option>All Status</option>
-                        <option>High Margin (>50%)</option>
-                        <option>Low Margin (<20%)</option>
-                    </select>
-                </div>
-                <div class="filter-group" style="flex: 2;">
-                    <label>Search</label>
-                    <input type="text" placeholder="Product name...">
-                </div>
-                <button class="btn btn-primary" style="align-self: flex-end;">Filter</button>
+            <div class="tabs">
+                <button class="tab-button active" onclick="showTab('price-profit')">
+                    <i class="fa-solid fa-chart-pie"></i> Lợi nhuận danh mục
+                </button>
+                <button class="tab-button" onclick="showTab('product-profit')">
+                    <i class="fa-solid fa-box"></i> Lợi nhuận sản phẩm
+                </button>
+                <button class="tab-button" onclick="showTab('price-lookup')">
+                    <i class="fa-solid fa-magnifying-glass-dollar"></i> Tra cứu giá bán
+                </button>
             </div>
 
-            <div class="table-wrapper">
-                <table>
+            <div id="price-profit" class="tab-content active">
+                <div class="filter-section">
+                    <div class="filter-group-custom">
+                        <label>Tìm kiếm danh mục</label>
+                        <input type="text" placeholder="Nhập tên danh mục...">
+                    </div>
+                    <div class="filter-group-custom">
+                        <label>Khoảng lợi nhuận (%)</label>
+                        <select>
+                            <option value="">Tất cả</option>
+                            <option value="low">0% - 15%</option>
+                            <option value="medium">15% - 30%</option>
+                            <option value="high">Trên 30%</option>
+                        </select>
+                    </div>
+                    <div class="filter-group-custom" style="flex: 0; min-width: auto; align-self: flex-end;">
+                        <button class="search-btn" onclick="fakeSearch('price-profit')"><i class="fas fa-search"></i> Tìm kiếm</button>
+                    </div>
+                </div>
+                <table class="data-table">
                     <thead>
                     <tr>
-                        <th style="width: 300px;">Product Info</th>
-                        <th>Cost (Avg)</th>
-                        <th>Margin %</th>
-                        <th>Profit</th>
-                        <th>Selling Price</th>
-                        <th>Actions</th>
+                        <th style="width: 10%;">STT</th>
+                        <th>TÊN DANH MỤC</th>
+                        <th>TỶ LỆ LỢI NHUẬN TB (%)</th>
+                        <th style="width: 15%; text-align: center;">THAO TÁC</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="https://images.unsplash.com/photo-1590212151175-e58edd96185b?w=100" alt="img">
-                                <div>
-                                    <span class="name">Monitor 27" 144Hz</span>
-                                    <span class="id"><span class="sku-text">MON-001</span></span>
-                                    <div class="stock-indicator"><i class="fa-solid fa-box"></i> Stock: 45</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>$150.00</td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <input type="number" value="52" class="table-input" style="width: 60px;">
-                                <span class="profit-badge profit-high">High</span>
-                            </div>
-                        </td>
-                        <td style="color: #2f855a; font-weight: 600;">+$79.00</td>
-                        <td>
-                            <input type="number" value="229.00" class="table-input">
-                            <span class="price-meta">Suggested: $225 - $235</span>
-                        </td>
-                        <td>
-                            <div class="action-icons">
-                                <i class="fa-solid fa-floppy-disk save-row-btn" title="Save this item" style="color: var(--primary-color);"></i>
-                                <i class="fa-solid fa-clock-rotate-left history-btn" title="Price History"></i>
-                            </div>
-                        </td>
+                        <td>1</td>
+                        <td><strong>Smartphones</strong></td>
+                        <td><span class="status-badge status-shipped">25%</span></td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Smartphones', null, 25)"><i class="fa-solid fa-pen"></i></div></td>
                     </tr>
-
                     <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="https://images.unsplash.com/photo-1632156752398-2b2cb4e6c907?w=100" alt="img">
-                                <div>
-                                    <span class="name">Power Bank 20k</span>
-                                    <span class="id"><span class="sku-text">PB-20K</span></span>
-                                    <div class="stock-indicator"><i class="fa-solid fa-box"></i> Stock: 120</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>$25.00</td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <input type="number" value="56" class="table-input" style="width: 60px;">
-                                <span class="profit-badge profit-med">Good</span>
-                            </div>
-                        </td>
-                        <td style="color: #2b6cb0; font-weight: 600;">+$14.00</td>
-                        <td>
-                            <input type="number" value="39.00" class="table-input">
-                            <span class="price-meta">Suggested: $39.99</span>
-                        </td>
-                        <td>
-                            <div class="action-icons">
-                                <i class="fa-solid fa-floppy-disk save-row-btn" title="Save this item" style="color: var(--primary-color);"></i>
-                                <i class="fa-solid fa-clock-rotate-left history-btn" title="Price History"></i>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>
-                            <div class="product-info">
-                                <img src="https://images.unsplash.com/photo-1702471897393-47ec1ba1192b?w=100" alt="img">
-                                <div>
-                                    <span class="name">VR Headset Pro</span>
-                                    <span class="id"><span class="sku-text">VR-PRO</span></span>
-                                    <div class="stock-indicator"><i class="fa-solid fa-box"></i> Stock: 5</div>
-                                </div>
-                            </div>
-                        </td>
-                        <td>$380.00</td>
-                        <td>
-                            <div style="display: flex; align-items: center;">
-                                <input type="number" value="5" class="table-input" style="width: 60px; color: #c53030;">
-                                <span class="profit-badge profit-low">Low</span>
-                            </div>
-                        </td>
-                        <td style="color: #c53030; font-weight: 600;">+$19.00</td>
-                        <td>
-                            <input type="number" value="399.00" class="table-input" style="border-color: #feb2b2;">
-                            <span class="price-meta" style="color:#e53e3e;">Rec: Increase to $450</span>
-                        </td>
-                        <td>
-                            <div class="action-icons">
-                                <i class="fa-solid fa-floppy-disk save-row-btn" title="Save this item" style="color: var(--primary-color);"></i>
-                                <i class="fa-solid fa-clock-rotate-left history-btn" title="Price History"></i>
-                            </div>
-                        </td>
+                        <td>2</td>
+                        <td><strong>Phụ kiện</strong></td>
+                        <td><span class="status-badge status-completed">45%</span></td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Phụ kiện', null, 45)"><i class="fa-solid fa-pen"></i></div></td>
                     </tr>
                     </tbody>
                 </table>
+            </div>
 
-                <div class="pagination">
-                    <span>Showing 1 to 3 of 42 products</span>
-                    <div class="pagination-controls">
-                        <button disabled><i class="fa-solid fa-chevron-left"></i></button>
-                        <button class="active">1</button>
-                        <button>2</button>
-                        <button>3</button>
-                        <button>...</button>
-                        <button><i class="fa-solid fa-chevron-right"></i></button>
+            <div id="product-profit" class="tab-content">
+                <div class="filter-section">
+                    <div class="filter-group-custom">
+                        <label>Tìm kiếm sản phẩm</label>
+                        <input type="text" placeholder="Nhập tên sản phẩm...">
+                    </div>
+                    <div class="filter-group-custom">
+                        <label>Danh mục</label>
+                        <select>
+                            <option value="">Tất cả danh mục</option>
+                            <option value="Smartphones">Smartphones</option>
+                            <option value="Laptops">Laptops</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Smart Home">Smart Home</option>
+                        </select>
+                    </div>
+                    <div class="filter-group-custom" style="flex: 0; min-width: auto; align-self: flex-end;">
+                        <button class="search-btn" onclick="fakeSearch('product-profit')"><i class="fas fa-search"></i> Tìm kiếm</button>
                     </div>
                 </div>
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th style="width: 10%;">STT</th>
+                        <th>SẢN PHẨM</th>
+                        <th>DANH MỤC</th>
+                        <th>LỢI NHUẬN (%)</th>
+                        <th style="width: 15%; text-align: center;">THAO TÁC</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>iPhone 15 Pro Max</td>
+                        <td>Smartphones</td>
+                        <td>20%</td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('iPhone 15 Pro Max', null, 20)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>Cáp sạc Anker</td>
+                        <td>Phụ kiện</td>
+                        <td>55%</td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Cáp sạc Anker', null, 55)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                    </tbody>
+                </table>
             </div>
+
+            <div id="price-lookup" class="tab-content">
+                <div class="filter-section">
+                    <div class="filter-group-custom">
+                        <label>Tìm kiếm sản phẩm</label>
+                        <input type="text" placeholder="Nhập tên sản phẩm...">
+                    </div>
+                    <div class="filter-group-custom">
+                        <label>Danh mục</label>
+                        <select>
+                            <option value="">Tất cả danh mục</option>
+                            <option value="Smartphones">Smartphones</option>
+                            <option value="Laptops">Laptops</option>
+                            <option value="Accessories">Accessories</option>
+                            <option value="Smart Home">Smart Home</option>
+                        </select>
+                    </div>
+                    <div class="filter-group-custom">
+                        <label>Khoảng giá</label>
+                        <select>
+                            <option value="">Tất cả</option>
+                            <option value="under50">Dưới $50</option>
+                            <option value="50-200">$50 - $200</option>
+                            <option value="200-500">$200 - $500</option>
+                            <option value="over500">Trên $500</option>
+                        </select>
+                    </div>
+                    <div class="filter-group-custom" style="flex: 0; min-width: auto; align-self: flex-end;">
+                        <button class="search-btn" onclick="fakeSearch('price-lookup')"><i class="fas fa-search"></i> Tìm kiếm</button>
+                    </div>
+                </div>
+                <table class="data-table">
+                    <thead>
+                    <tr>
+                        <th>STT</th>
+                        <th style="width: 30%;">SẢN PHẨM</th>
+                        <th>GIÁ VỐN</th>
+                        <th>LỢI NHUẬN</th>
+                        <th>GIÁ BÁN</th>
+                        <th style="text-align: center;">THAO TÁC</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="width:40px; height:40px; background:#f7fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; border:1px solid #edf2f7;"><i class="fa-solid fa-image"></i></div>
+                                <strong>Monitor 27" 144Hz</strong>
+                            </div>
+                        </td>
+                        <td style="font-family: monospace; color:#718096;">$229.00</td>
+                        <td style="color: #2f855a; font-weight: bold;">35%</td>
+                        <td style="font-weight: 700; color: #3182ce;">$309.15</td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Monitor 27 144Hz', 229, 35)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="width:40px; height:40px; background:#f7fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; border:1px solid #edf2f7;"><i class="fa-solid fa-bolt"></i></div>
+                                <strong>Power Bank 20k</strong>
+                            </div>
+                        </td>
+                        <td style="font-family: monospace; color:#718096;">$39.00</td>
+                        <td style="color: #d69e2e; font-weight: bold;">30%</td>
+                        <td style="font-weight: 700; color: #3182ce;">$50.70</td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Power Bank 20k', 39, 30)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="pagination">
+                <span>Showing 1 to 10 of 50 entries</span>
+                <div class="pagination-controls">
+                    <button disabled><i class="fa-solid fa-chevron-left"></i></button>
+                    <button class="active">1</button>
+                    <button>2</button>
+                    <button><i class="fa-solid fa-chevron-right"></i></button>
+                </div>
+            </div>
+
         </div>
     </main>
 </div>
 
-<div class="modal-overlay" id="modal-overlay"></div>
+<div id="editPriceModal" class="price-modal">
+    <div class="price-modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-pen-to-square"></i> Cập Nhật Thông Tin</h3>
+        <form id="editPriceForm" onsubmit="event.preventDefault(); saveChanges();">
+            <div class="form-group-modal">
+                <label>Tên Đối Tượng</label>
+                <input type="text" id="modal-product-name" disabled style="background-color: #f8f9fa; color: #4a5568;">
+            </div>
 
-<div class="modal" id="history-modal" style="max-width: 600px;">
-    <div class="modal-header">
-        <h3>Price History: <span id="history-product-name" style="color: var(--primary-color);">Product Name</span></h3>
-        <button class="modal-close" data-dismiss="modal">&times;</button>
-    </div>
-    <div class="modal-body" style="padding: 0;">
-        <table class="history-table">
-            <thead>
-            <tr>
-                <th>Date</th>
-                <th>User</th>
-                <th>Change</th>
-                <th>Old <i class="fa-solid fa-arrow-right change-arrow"></i> New</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>2024-11-20 <br><small style="color: #aaa">09:30 AM</small></td>
-                <td><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" class="user-avatar-xs"> Admin</td>
-                <td><span class="status-badge status-completed">Price Increase</span></td>
-                <td>$219 <i class="fa-solid fa-arrow-right change-arrow"></i> <strong>$229</strong></td>
-            </tr>
-            <tr>
-                <td>2024-10-15 <br><small style="color: #aaa">14:15 PM</small></td>
-                <td><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQbN9kird_uBOxIp7D8wPDFheGHqHYkba_FDw&s" class="user-avatar-xs"> Admin</td>
-                <td><span class="status-badge status-pending">Margin Adj</span></td>
-                <td>50% <i class="fa-solid fa-arrow-right change-arrow"></i> <strong>52%</strong></td>
-            </tr>
-            <tr>
-                <td>2024-09-01 <br><small style="color: #aaa">10:00 AM</small></td>
-                <td>System</td>
-                <td><span class="status-badge status-shipped">Import Update</span></td>
-                <td>Cost: $145 <i class="fa-solid fa-arrow-right change-arrow"></i> <strong>$150</strong></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="form-group-modal" id="group-cost">
+                <label>Giá Vốn ($)</label>
+                <input type="number" id="modal-cost-price" min="0" step="0.01" oninput="calculateSellingPrice()" placeholder="Nhập giá vốn...">
+            </div>
+
+            <div class="form-group-modal">
+                <label>Tỷ Lệ Lợi Nhuận (%)</label>
+                <input type="number" id="modal-profit-rate" required min="0" max="100" step="0.1" oninput="calculateSellingPrice()" placeholder="VD: 20">
+            </div>
+
+            <div class="form-group-modal" id="group-price">
+                <label>Giá Bán Ước Tính</label>
+                <input type="text" id="modal-selling-price" disabled value="$0.00" style="font-weight: 700; color: #2f855a; background: #fff;">
+            </div>
+
+            <button type="submit" class="save-btn"><i class="fa-solid fa-floppy-disk"></i> Lưu Thay Đổi</button>
+        </form>
     </div>
 </div>
 
 <div class="toast" id="success-toast">
     <i class="fa-solid fa-check-circle"></i>
-    <span>Action completed successfully!</span>
+    <span>Cập nhật thành công!</span>
 </div>
 
 <script src="assets/js/main.js"></script>
-
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        const overlay = document.getElementById("modal-overlay");
-        const historyModal = document.getElementById("history-modal");
-        const successToast = document.getElementById("success-toast");
+    // --- JS LOGIC ---
+    function fakeSearch(tabId) {
+        const tbody = document.querySelector(`#${tabId} tbody`);
 
-        const saveAllBtn = document.getElementById("save-all-btn");
-        const exportBtn = document.getElementById("export-btn");
-        const saveRowBtns = document.querySelectorAll(".save-row-btn");
-        const historyBtns = document.querySelectorAll(".history-btn");
-        const pageBtns = document.querySelectorAll('.pagination-controls button');
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color: #718096;"><i class="fa-solid fa-spinner fa-2x"></i><p style="margin-top:10px;">Đang tìm kiếm...</p></td></tr>`;
 
-        // --- Helper: Modal ---
-        function openModal(modal) {
-            modal.classList.add("active");
-            overlay.classList.add("active");
-        }
-        function closeModal() {
-            document.querySelectorAll('.modal.active').forEach(m => m.classList.remove('active'));
-            overlay.classList.remove('active');
-        }
-        overlay.addEventListener("click", closeModal);
-        document.querySelectorAll('[data-dismiss="modal"]').forEach(btn => btn.addEventListener("click", closeModal));
+        setTimeout(() => {
+            let fakeHTML = '';
 
-        // --- Helper: Toast ---
-        function showToast(message) {
-            if (!successToast) return;
-            const toastText = successToast.querySelector("span");
-            if(toastText) toastText.innerText = message;
-            successToast.classList.add("show");
-            setTimeout(() => {
-                successToast.classList.remove("show");
-            }, 3000);
-        }
-
-        // 1. History Button Logic (Fake dynamic data)
-        historyBtns.forEach(btn => {
-            btn.addEventListener("click", function() {
-                // Lấy tên sản phẩm từ dòng tương ứng để hiện lên Modal cho thật
-                const row = this.closest('tr');
-                const productName = row.querySelector('.name').innerText;
-                document.getElementById('history-product-name').innerText = productName;
-                openModal(historyModal);
-            });
-        });
-
-        // 2. Save All Logic (Fake)
-        if(saveAllBtn) {
-            saveAllBtn.addEventListener("click", () => {
-                showToast("All pricing changes saved successfully!");
-            });
-        }
-
-        // 3. Export Logic (Fake)
-        if(exportBtn) {
-            exportBtn.addEventListener("click", () => {
-                showToast("Exporting price_list_2024.xlsx ...");
-            });
-        }
-
-        // 4. Row Save Logic (Fake)
-        saveRowBtns.forEach(btn => {
-            btn.addEventListener("click", function() {
-                const row = this.closest('tr');
-                const productName = row.querySelector('.name').innerText;
-                showToast(`Updated price for: ${productName}`);
-            });
-        });
-
-        // 5. Pagination Active Logic (Fake)
-        pageBtns.forEach(btn => {
-            if (!btn.querySelector('i') && btn.innerText !== "...") {
-                btn.addEventListener('click', function() {
-                    pageBtns.forEach(b => {
-                        if(!b.querySelector('i')) b.classList.remove('active');
-                    });
-                    this.classList.add('active');
-                });
+            if(tabId === 'price-profit') {
+                fakeHTML = `
+                    <tr>
+                        <td>1</td>
+                        <td><strong>Laptops Gaming</strong></td>
+                        <td><span class="status-badge status-shipped">18%</span></td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Laptops Gaming', null, 18)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                    <tr>
+                        <td>2</td>
+                        <td><strong>Smart Home</strong></td>
+                        <td><span class="status-badge status-completed">35%</span></td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Smart Home', null, 35)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                `;
+            } else if (tabId === 'product-profit') {
+                fakeHTML = `
+                    <tr>
+                        <td>1</td>
+                        <td>MacBook Air M2</td>
+                        <td>Laptops</td>
+                        <td>15%</td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('MacBook Air M2', null, 15)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                `;
+            } else if (tabId === 'price-lookup') {
+                fakeHTML = `
+                    <tr>
+                        <td>1</td>
+                        <td>
+                            <div style="display:flex; align-items:center; gap:12px;">
+                                <div style="width:40px; height:40px; background:#f7fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; border:1px solid #edf2f7;"><i class="fa-solid fa-laptop"></i></div>
+                                <strong>Dell XPS 13</strong>
+                            </div>
+                        </td>
+                        <td style="font-family: monospace; color:#718096;">$999.00</td>
+                        <td style="color: #2f855a; font-weight: bold;">10%</td>
+                        <td style="font-weight: 700; color: #3182ce;">$1,098.90</td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Dell XPS 13', 999, 10)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr>
+                `;
             }
-        });
-    });
-</script>
 
+            tbody.innerHTML = fakeHTML;
+        }, 500);
+    }
+
+    // --- CÁC LOGIC CHUYỂN TAB VÀ MODAL ---
+    function showTab(tabId) {
+        document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
+        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+
+        document.getElementById(tabId).classList.add('active');
+        const btns = document.querySelectorAll('.tab-button');
+        btns.forEach(btn => {
+            if(btn.getAttribute('onclick').includes(tabId)) btn.classList.add('active');
+        });
+    }
+
+    const modal = document.getElementById('editPriceModal');
+    const toast = document.getElementById('success-toast');
+
+    function openEditModal(name, cost, profit) {
+        document.getElementById('modal-product-name').value = name;
+        document.getElementById('modal-profit-rate').value = profit;
+
+        const costGroup = document.getElementById('group-cost');
+        const priceGroup = document.getElementById('group-price');
+        const costInput = document.getElementById('modal-cost-price');
+
+        if (cost === null) {
+            costGroup.style.display = 'none';
+            priceGroup.style.display = 'none';
+            costInput.removeAttribute('required');
+            costInput.value = 0;
+        } else {
+            costGroup.style.display = 'block';
+            priceGroup.style.display = 'block';
+            costInput.setAttribute('required', 'true');
+            costInput.value = cost;
+            calculateSellingPrice();
+        }
+
+        modal.classList.add('active');
+    }
+
+    function closeModal() { modal.classList.remove('active'); }
+    window.onclick = function(event) { if (event.target == modal) closeModal(); }
+
+    function calculateSellingPrice() {
+        if (document.getElementById('group-cost').style.display !== 'none') {
+            const cost = parseFloat(document.getElementById('modal-cost-price').value) || 0;
+            const profitRate = parseFloat(document.getElementById('modal-profit-rate').value) || 0;
+            const sellingPrice = cost * (1 + profitRate / 100);
+
+            document.getElementById('modal-selling-price').value = new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(sellingPrice);
+        }
+    }
+
+    function saveChanges() {
+        closeModal();
+        toast.classList.add('show');
+        setTimeout(() => { toast.classList.remove('show'); }, 3000);
+    }
+</script>
 </body>
 </html>
