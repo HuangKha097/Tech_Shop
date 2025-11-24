@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TechStore - Quản lý giá bán</title>
+    <title>TechStore - Price Management</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -14,7 +14,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
     <style>
-        /* --- CSS GIỮ NGUYÊN --- */
+        /* --- KEEP CSS AS IS --- */
 
         .tabs { display: flex; gap: 10px; margin-bottom: 24px; border-bottom: 1px solid #e2e8f0; }
 
@@ -94,8 +94,8 @@
 <div class="app-container">
 
     <nav class="sidebar">
-        <div class="sidebar-header">
-            <img style="width: 200px;" src="../../ui/User/assets/images/2.png" alt="logo">
+        <div style="width: 100%; display:flex; justify-content: center" class="sidebar-header">
+            <img style="width: 150px;" src="../../ui/User/assets/images/2.png" alt="logo">
         </div>
         <ul class="nav-list">
             <li class="nav-item"><a href="index.html"><i class="fa-solid fa-table-cells-large"></i><span>Dashboard</span></a></li>
@@ -134,7 +134,7 @@
                         <small>admin@tech.com</small>
                     </div>
                     <ul class="dropdown-list">
-                        <li class="dropdown-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Setting</span></a></li>
+                        <li class="dropdown-item"><a href="./settings.html"><i class="fa-solid fa-gear"></i><span>Settings</span></a></li>
                     </ul>
                     <div class="dropdown-footer">
                         <li class="dropdown-item"><a href="./login.html"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Logout</span></a></li>
@@ -146,49 +146,49 @@
         <div class="page-content">
             <div class="page-header">
                 <div>
-                    <h1>Quản lý giá bán</h1>
-                    <p>Điều chỉnh chiến lược giá và theo dõi lợi nhuận</p>
+                    <h1>Price Management</h1>
+                    <p>Adjust pricing strategy and monitor profits</p>
                 </div>
             </div>
 
             <div class="tabs">
                 <button class="tab-button active" onclick="showTab('price-profit')">
-                    <i class="fa-solid fa-chart-pie"></i> Lợi nhuận danh mục
+                    <i class="fa-solid fa-chart-pie"></i> Category Profit
                 </button>
                 <button class="tab-button" onclick="showTab('product-profit')">
-                    <i class="fa-solid fa-box"></i> Lợi nhuận sản phẩm
+                    <i class="fa-solid fa-box"></i> Product Profit
                 </button>
                 <button class="tab-button" onclick="showTab('price-lookup')">
-                    <i class="fa-solid fa-magnifying-glass-dollar"></i> Tra cứu giá bán
+                    <i class="fa-solid fa-magnifying-glass-dollar"></i> Price Lookup
                 </button>
             </div>
 
             <div id="price-profit" class="tab-content active">
                 <div class="filter-section">
                     <div class="filter-group-custom">
-                        <label>Tìm kiếm danh mục</label>
-                        <input type="text" placeholder="Nhập tên danh mục...">
+                        <label>Search Category</label>
+                        <input type="text" placeholder="Enter category name...">
                     </div>
                     <div class="filter-group-custom">
-                        <label>Khoảng lợi nhuận (%)</label>
+                        <label>Profit Margin (%)</label>
                         <select>
-                            <option value="">Tất cả</option>
+                            <option value="">All</option>
                             <option value="low">0% - 15%</option>
                             <option value="medium">15% - 30%</option>
-                            <option value="high">Trên 30%</option>
+                            <option value="high">Over 30%</option>
                         </select>
                     </div>
                     <div class="filter-group-custom" style="flex: 0; min-width: auto; align-self: flex-end;">
-                        <button class="search-btn" onclick="fakeSearch('price-profit')"><i class="fas fa-search"></i> Tìm kiếm</button>
+                        <button class="search-btn" onclick="fakeSearch('price-profit')"><i class="fas fa-search"></i> Search</button>
                     </div>
                 </div>
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th style="width: 10%;">STT</th>
-                        <th>TÊN DANH MỤC</th>
-                        <th>TỶ LỆ LỢI NHUẬN TB (%)</th>
-                        <th style="width: 15%; text-align: center;">THAO TÁC</th>
+                        <th style="width: 10%;">No.</th>
+                        <th>CATEGORY NAME</th>
+                        <th>AVG PROFIT MARGIN (%)</th>
+                        <th style="width: 15%; text-align: center;">ACTIONS</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -197,12 +197,17 @@
                         <td><strong>Smartphones</strong></td>
                         <td><span class="status-badge status-shipped">25%</span></td>
                         <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Smartphones', null, 25)"><i class="fa-solid fa-pen"></i></div></td>
+                    </tr> <tr>
+                        <td>1</td>
+                        <td><strong>Laptop</strong></td>
+                        <td><span class="status-badge status-shipped">25%</span></td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Laptop', null, 30)"><i class="fa-solid fa-pen"></i></div></td>
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td><strong>Phụ kiện</strong></td>
+                        <td><strong>Accessories</strong></td>
                         <td><span class="status-badge status-completed">45%</span></td>
-                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Phụ kiện', null, 45)"><i class="fa-solid fa-pen"></i></div></td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Accessories', null, 45)"><i class="fa-solid fa-pen"></i></div></td>
                     </tr>
                     </tbody>
                 </table>
@@ -211,13 +216,13 @@
             <div id="product-profit" class="tab-content">
                 <div class="filter-section">
                     <div class="filter-group-custom">
-                        <label>Tìm kiếm sản phẩm</label>
-                        <input type="text" placeholder="Nhập tên sản phẩm...">
+                        <label>Search Product</label>
+                        <input type="text" placeholder="Enter product name...">
                     </div>
                     <div class="filter-group-custom">
-                        <label>Danh mục</label>
+                        <label>Category</label>
                         <select>
-                            <option value="">Tất cả danh mục</option>
+                            <option value="">All Categories</option>
                             <option value="Smartphones">Smartphones</option>
                             <option value="Laptops">Laptops</option>
                             <option value="Accessories">Accessories</option>
@@ -225,17 +230,17 @@
                         </select>
                     </div>
                     <div class="filter-group-custom" style="flex: 0; min-width: auto; align-self: flex-end;">
-                        <button class="search-btn" onclick="fakeSearch('product-profit')"><i class="fas fa-search"></i> Tìm kiếm</button>
+                        <button class="search-btn" onclick="fakeSearch('product-profit')"><i class="fas fa-search"></i> Search</button>
                     </div>
                 </div>
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th style="width: 10%;">STT</th>
-                        <th>SẢN PHẨM</th>
-                        <th>DANH MỤC</th>
-                        <th>LỢI NHUẬN (%)</th>
-                        <th style="width: 15%; text-align: center;">THAO TÁC</th>
+                        <th style="width: 10%;">No.</th>
+                        <th>PRODUCT</th>
+                        <th>CATEGORY</th>
+                        <th>PROFIT (%)</th>
+                        <th style="width: 15%; text-align: center;">ACTIONS</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -248,10 +253,10 @@
                     </tr>
                     <tr>
                         <td>2</td>
-                        <td>Cáp sạc Anker</td>
-                        <td>Phụ kiện</td>
+                        <td>Anker Charging Cable</td>
+                        <td>Accessories</td>
                         <td>55%</td>
-                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Cáp sạc Anker', null, 55)"><i class="fa-solid fa-pen"></i></div></td>
+                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Anker Charging Cable', null, 55)"><i class="fa-solid fa-pen"></i></div></td>
                     </tr>
                     </tbody>
                 </table>
@@ -260,13 +265,13 @@
             <div id="price-lookup" class="tab-content">
                 <div class="filter-section">
                     <div class="filter-group-custom">
-                        <label>Tìm kiếm sản phẩm</label>
-                        <input type="text" placeholder="Nhập tên sản phẩm...">
+                        <label>Search Product</label>
+                        <input type="text" placeholder="Enter product name...">
                     </div>
                     <div class="filter-group-custom">
-                        <label>Danh mục</label>
+                        <label>Category</label>
                         <select>
-                            <option value="">Tất cả danh mục</option>
+                            <option value="">All Categories</option>
                             <option value="Smartphones">Smartphones</option>
                             <option value="Laptops">Laptops</option>
                             <option value="Accessories">Accessories</option>
@@ -274,28 +279,28 @@
                         </select>
                     </div>
                     <div class="filter-group-custom">
-                        <label>Khoảng giá</label>
+                        <label>Price Range</label>
                         <select>
-                            <option value="">Tất cả</option>
-                            <option value="under50">Dưới $50</option>
+                            <option value="">All</option>
+                            <option value="under50">Under $50</option>
                             <option value="50-200">$50 - $200</option>
                             <option value="200-500">$200 - $500</option>
-                            <option value="over500">Trên $500</option>
+                            <option value="over500">Over $500</option>
                         </select>
                     </div>
                     <div class="filter-group-custom" style="flex: 0; min-width: auto; align-self: flex-end;">
-                        <button class="search-btn" onclick="fakeSearch('price-lookup')"><i class="fas fa-search"></i> Tìm kiếm</button>
+                        <button class="search-btn" onclick="fakeSearch('price-lookup')"><i class="fas fa-search"></i> Search</button>
                     </div>
                 </div>
                 <table class="data-table">
                     <thead>
                     <tr>
-                        <th>STT</th>
-                        <th style="width: 30%;">SẢN PHẨM</th>
-                        <th>GIÁ VỐN</th>
-                        <th>LỢI NHUẬN</th>
-                        <th>GIÁ BÁN</th>
-                        <th style="text-align: center;">THAO TÁC</th>
+                        <th>No.</th>
+                        <th style="width: 30%;">PRODUCT</th>
+                        <th>COST PRICE</th>
+                        <th>MARGIN</th>
+                        <th>SELLING PRICE</th>
+                        <th style="text-align: center;">ACTIONS</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -303,7 +308,9 @@
                         <td>1</td>
                         <td>
                             <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="width:40px; height:40px; background:#f7fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; border:1px solid #edf2f7;"><i class="fa-solid fa-image"></i></div>
+                                <div style="width:40px; height:40px; background:#f7fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; border:1px solid #edf2f7;">
+                                    <img src="https://images.unsplash.com/photo-1590212151175-e58edd96185b?ixlib=rb-4.1.0&auto=format&fit=crop&q=80&w=1171" alt="Monitor">
+                                </div>
                                 <strong>Monitor 27" 144Hz</strong>
                             </div>
                         </td>
@@ -316,7 +323,9 @@
                         <td>2</td>
                         <td>
                             <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="width:40px; height:40px; background:#f7fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; border:1px solid #edf2f7;"><i class="fa-solid fa-bolt"></i></div>
+                                <div style="width:40px; height:40px; background:#f7fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; border:1px solid #edf2f7;">
+                                    <img src="https://www.coriolis-pro.com/medias/produits/3381666225/2267_1280-powerbank-s6600-white.jpg" alt="powerbank">
+                                    </i></div>
                                 <strong>Power Bank 20k</strong>
                             </div>
                         </td>
@@ -346,36 +355,36 @@
 <div id="editPriceModal" class="price-modal">
     <div class="price-modal-content">
         <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-pen-to-square"></i> Cập Nhật Thông Tin</h3>
+        <h3 style="margin-bottom: 20px;"><i class="fa-solid fa-pen-to-square"></i> Update Information</h3>
         <form id="editPriceForm" onsubmit="event.preventDefault(); saveChanges();">
             <div class="form-group-modal">
-                <label>Tên Đối Tượng</label>
+                <label>Item Name</label>
                 <input type="text" id="modal-product-name" disabled style="background-color: #f8f9fa; color: #4a5568;">
             </div>
 
             <div class="form-group-modal" id="group-cost">
-                <label>Giá Vốn ($)</label>
-                <input type="number" id="modal-cost-price" min="0" step="0.01" oninput="calculateSellingPrice()" placeholder="Nhập giá vốn...">
+                <label>Cost Price ($)</label>
+                <input type="number" id="modal-cost-price" min="0" step="0.01" oninput="calculateSellingPrice()" placeholder="Enter cost price...">
             </div>
 
             <div class="form-group-modal">
-                <label>Tỷ Lệ Lợi Nhuận (%)</label>
-                <input type="number" id="modal-profit-rate" required min="0" max="100" step="0.1" oninput="calculateSellingPrice()" placeholder="VD: 20">
+                <label>Profit Margin (%)</label>
+                <input type="number" id="modal-profit-rate" required min="0" max="100" step="0.1" oninput="calculateSellingPrice()" placeholder="Ex: 20">
             </div>
 
             <div class="form-group-modal" id="group-price">
-                <label>Giá Bán Ước Tính</label>
+                <label>Estimated Selling Price</label>
                 <input type="text" id="modal-selling-price" disabled value="$0.00" style="font-weight: 700; color: #2f855a; background: #fff;">
             </div>
 
-            <button type="submit" class="save-btn"><i class="fa-solid fa-floppy-disk"></i> Lưu Thay Đổi</button>
+            <button type="submit" class="save-btn"><i class="fa-solid fa-floppy-disk"></i> Save Changes</button>
         </form>
     </div>
 </div>
 
 <div class="toast" id="success-toast">
     <i class="fa-solid fa-check-circle"></i>
-    <span>Cập nhật thành công!</span>
+    <span>Update successful!</span>
 </div>
 
 <script src="assets/js/main.js"></script>
@@ -384,59 +393,20 @@
     function fakeSearch(tabId) {
         const tbody = document.querySelector(`#${tabId} tbody`);
 
-        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color: #718096;"><i class="fa-solid fa-spinner fa-2x"></i><p style="margin-top:10px;">Đang tìm kiếm...</p></td></tr>`;
+        // 1. Lưu lại nội dung bảng hiện tại trước khi hiển thị loading
+        const originalContent = tbody.innerHTML;
 
+        // 2. Hiển thị Loading (Spinner)
+        // Lưu ý: colspan=6 để đảm bảo spinner nằm giữa bảng
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; padding: 40px; color: #718096;"><i class="fa-solid fa-spinner fa-2x"></i><p style="margin-top:10px;">Searching...</p></td></tr>`;
+
+        // 3. Đợi 1 giây rồi trả lại nội dung cũ (Không thay đổi dữ liệu)
         setTimeout(() => {
-            let fakeHTML = '';
-
-            if(tabId === 'price-profit') {
-                fakeHTML = `
-                    <tr>
-                        <td>1</td>
-                        <td><strong>Laptops Gaming</strong></td>
-                        <td><span class="status-badge status-shipped">18%</span></td>
-                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Laptops Gaming', null, 18)"><i class="fa-solid fa-pen"></i></div></td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td><strong>Smart Home</strong></td>
-                        <td><span class="status-badge status-completed">35%</span></td>
-                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Smart Home', null, 35)"><i class="fa-solid fa-pen"></i></div></td>
-                    </tr>
-                `;
-            } else if (tabId === 'product-profit') {
-                fakeHTML = `
-                    <tr>
-                        <td>1</td>
-                        <td>MacBook Air M2</td>
-                        <td>Laptops</td>
-                        <td>15%</td>
-                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('MacBook Air M2', null, 15)"><i class="fa-solid fa-pen"></i></div></td>
-                    </tr>
-                `;
-            } else if (tabId === 'price-lookup') {
-                fakeHTML = `
-                    <tr>
-                        <td>1</td>
-                        <td>
-                            <div style="display:flex; align-items:center; gap:12px;">
-                                <div style="width:40px; height:40px; background:#f7fafc; border-radius:6px; display:flex; align-items:center; justify-content:center; color:#a0aec0; border:1px solid #edf2f7;"><i class="fa-solid fa-laptop"></i></div>
-                                <strong>Dell XPS 13</strong>
-                            </div>
-                        </td>
-                        <td style="font-family: monospace; color:#718096;">$999.00</td>
-                        <td style="color: #2f855a; font-weight: bold;">10%</td>
-                        <td style="font-weight: 700; color: #3182ce;">$1,098.90</td>
-                        <td style="text-align: center;"><div class="action-btn-edit" onclick="openEditModal('Dell XPS 13', 999, 10)"><i class="fa-solid fa-pen"></i></div></td>
-                    </tr>
-                `;
-            }
-
-            tbody.innerHTML = fakeHTML;
-        }, 500);
+            tbody.innerHTML = originalContent;
+        }, 1000);
     }
 
-    // --- CÁC LOGIC CHUYỂN TAB VÀ MODAL ---
+    // --- TAB AND MODAL LOGIC (GIỮ NGUYÊN) ---
     function showTab(tabId) {
         document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
         document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
@@ -494,5 +464,6 @@
         setTimeout(() => { toast.classList.remove('show'); }, 3000);
     }
 </script>
+
 </body>
 </html>
